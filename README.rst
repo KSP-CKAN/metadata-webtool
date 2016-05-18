@@ -1,5 +1,14 @@
+CKAN-Metadata-Generator
+#######################
+
+Current Status
+==============
+
+Not actually usable.
+
+
 Original Mission
-################
+================
 
 What's currently specified is just a base to create brand new netkans for not-yet-hosted mods. Eventually expanding the UI to allow editing existing metadata would be great, but is likely much more in-depth.
 
@@ -7,7 +16,7 @@ Primarily this is a web form which results in a JSON file that is sent in a PR t
 Spacedock, github, and all other hosts (curse will be a kref-able source in the near future) are the current workflow determinants.
 
 SPACEDOCK
-=========
+---------
 
 If a user selects spacedock we should start by asking for the mod ID and then populating what info we can by scraping the API before accepting user input
 
@@ -37,7 +46,7 @@ For spacedock, netkan scrapes the name, abstract (short_description), author/sha
 	}
 
 GITHUB
-======
+------
 
 If a user selects spacedock we should start by asking for repository location and then populating what info we can by scraping the API before accepting user input
 
@@ -73,7 +82,7 @@ For github, netkan can scrape the name, abstract (description), author (owner.lo
 	}
 
 NON-KREF
-========
+--------
 
 Near all information has to be hand-entered for these mods.
 
