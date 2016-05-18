@@ -1,0 +1,5 @@
+.vs/
+env/
+static/bower_components/
+*.sln
+*.pyproj

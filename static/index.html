@@ -1,0 +1,240 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>ckan-metadata-generator</title>
+    <link rel="stylesheet" href="bower_components/jquery-ui/themes/base/jquery-ui.css">
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/jquery-ui/jquery-ui.js"></script>
+    <style>
+        .ui-autocomplete {
+            max-height: 100px;
+            overflow-y: auto;
+            /* prevent horizontal scrollbar */
+            overflow-x: hidden;
+        }
+    </style>
+    <script>
+        var mode;
+        var modes_autofill = {
+            "spacedock": ['name', 'license', 'abstract', 'author', 'version', 'download', 'download_size', 'download_hash', 'resources.homepage', 'resources.spacedock', 'resources.repository', 'resources.x_screenshot', 'ksp_version'],
+            "github": ['author', 'version', 'download', 'download_size', 'download_hash', 'resources.repository'],
+            "http": ['download', 'download_size', 'download_hash', 'download_content_type'],
+            "other": []
+        };
+        var license_ids = [
+                "public-domain",
+                "Apache", "Apache-1.0", "Apache-2.0",
+                "Artistic", "Artistic-1.0", "Artistic-2.0",
+                "BSD-2-clause", "BSD-3-clause", "BSD-4-clause",
+                "ISC",
+                "CC-BY", "CC-BY-1.0", "CC-BY-2.0", "CC-BY-2.5", "CC-BY-3.0", "CC-BY-4.0",
+                "CC-BY-SA", "CC-BY-SA-1.0", "CC-BY-SA-2.0", "CC-BY-SA-2.5", "CC-BY-SA-3.0", "CC-BY-SA-4.0",
+                "CC-BY-NC", "CC-BY-NC-1.0", "CC-BY-NC-2.0", "CC-BY-NC-2.5", "CC-BY-NC-3.0", "CC-BY-NC-4.0",
+                "CC-BY-NC-SA", "CC-BY-NC-SA-1.0", "CC-BY-NC-SA-2.0", "CC-BY-NC-SA-2.5", "CC-BY-NC-SA-3.0", "CC-BY-NC-SA-4.0",
+                "CC-BY-NC-ND", "CC-BY-NC-ND-1.0", "CC-BY-NC-ND-2.0", "CC-BY-NC-ND-2.5", "CC-BY-NC-ND-3.0", "CC-BY-NC-ND-4.0",
+                "CC0",
+                "CDDL", "CPL",
+                "EFL-1.0", "EFL-2.0",
+                "Expat", "MIT",
+                "GPL-1.0", "GPL-2.0", "GPL-3.0",
+                "LGPL-2.0", "LGPL-2.1", "LGPL-3.0",
+                "GFDL-1.0", "GFDL-1.1", "GFDL-1.2", "GFDL-1.3",
+                "GFDL-NIV-1.0", "GFDL-NIV-1.1", "GFDL-NIV-1.2", "GFDL-NIV-1.3",
+                "LPPL-1.0", "LPPL-1.1", "LPPL-1.2", "LPPL-1.3c",
+                "MPL-1.1",
+                "Perl",
+                "Python-2.0",
+                "QPL-1.0",
+                "W3C",
+                "Zlib",
+                "Zope",
+                "WTFPL",
+                "open-source", "restricted", "unrestricted", "unknown"
+        ];
+        function update_mode(new_mode) {
+            mode = new_mode;
+            var mi = $("#mode_input");
+            mi.empty();
+            mi.append($("#" + mode).clone());
+        }
+        function generate_netkan() {
+            var o = {
+                "spec_version": 1,
+            };
+            function sets(obj, name, as_name) {
+                var v = $("#" + name).val().trim();
+                if (v && v.length) {
+                    if (as_name) {
+                        obj[as_name] = v;
+                    } else {
+                        obj[name] = v;
+                    }
+                }
+            }
+            function seta(obj, name, as_name) {
+                var v = $("#" + name).val().trim();
+                if (v && v.length) {
+                    var va = v.split("\n");
+                    if (as_name) {
+                        obj[as_name] = va;
+                    } else {
+                        obj[name] = va;
+                    }
+                }
+            }
+            sets(o, "name");
+            sets(o, "identifier");
+            sets(o, "abstract");
+            seta(o, "license");
+            seta(o, "author");
+            sets(o, "download");
+            sets(o, "kref", "$kref");
+            if ($("#add_vref:checked").val()) {
+                o["$vref"] = "#/ckan/ksp-avc";
+            }
+            var ressources = {};
+            sets(ressources, "ressources_homepage", "homepage");
+            sets(ressources, "ressources_repository", "repository");
+            sets(ressources, "ressources_x_screenshot", "x_screenshot")
+            if (ressources.length) {
+                o["ressources"] = ressources;
+            }
+            var install = {}
+            sets(install, "file");
+            sets(install, "install_to");
+            if (install.length) {
+                o["install"] = install;
+            }
+            $("#json_output").val(JSON.stringify(o));
+
+
+
+        }
+    </script>
+    <script>
+        $(function () {
+            $("#generate_netkan").button().on("click", generate_netkan);
+            $("#mode_buttons").buttonset();
+
+            var al = $("#add_license").dialog({
+                autoOpen: false,
+                modal: true,
+                height: 300,
+                width: 400,
+                buttons: {
+                    "Add": function () {
+                        var li = $("#license");
+                        var new_val = (li.val() + " " + $("#add_license_id").val()).replace(/\s+/g, "\n").trim();
+                        li.val(new_val);
+                        $(this).dialog("close");
+                    },
+                    "Cancel": function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+            $("#add_license_id").autocomplete({
+                "source": license_ids
+            });
+            $("#add_license_button").on("click", function () {
+                al.dialog("open");
+                $("#add_license input").val("");
+            });
+
+
+
+        });
+    </script>
+</head>
+<body>
+    <div id="mode_buttons">
+        <button type="button" onclick="update_mode('spacedock');" id="spacedock_button">SpaceDock</button>
+        <button type="button" onclick="update_mode('github');" id="github_button">GitHub</button>
+        <button type="button" onclick="update_mode('http');" id="http_button">HTTP(S)</button>
+        <button type="button" onclick="update_mode('other');" id="other_button">Other</button>
+    </div>
+    <hr />
+    <div id="mode_input">
+    </div>
+    <hr />
+    <div>
+        <label>Name <input type="text" id="name" /></label>
+        <br />
+        <label>Identifier <input type="text" id="identifier" /></label>
+        <br />
+        <label>Download <input type="url" id="download" /></label>
+        <br />
+        <label>Repository <input type="url" id="ressources_repository" /></label>
+        <br />
+        <label>Homepage <input type="url" id="ressources_homepage" /></label>
+        <br />
+        <label>Screenshot <input type="url" id="ressources_x_screenshot" /></label>
+        <br />
+        <label>Authors (one per line) <textarea id="author"></textarea></label>
+        <br />
+        <label><input type="checkbox" id="add_vref" /> Installs <code>.version</code> file</label>
+        <br />
+        <label>KSP-Version <input type="text" id="ksp_version" /></label>
+        <br />
+        <label>$kref <input type="text" id="kref" /></label>
+        <br />
+        <label>Abstract <textarea id="abstract"></textarea></label>
+        <br />
+        <label>Licenses <textarea id="license"></textarea></label> <button type="button" id="add_license_button">Add</button>
+
+        <br />
+        <label>Depends on <textarea id="depends"></textarea></label>
+        <br />
+        <label>Recommends <textarea id="recommends"></textarea></label>
+        <br />
+        <label>Suggests <textarea id="suggests"></textarea></label>
+        <br />
+        <label>Provides <textarea id="provides"></textarea></label>
+        <br />
+        <label>Conflicts with <textarea id="conflicts"></textarea></label>
+        <br />
+        <label>Install Root <input type="text" id="file" /></label>
+        <br />
+        <label>
+            Install to
+            <select id="install_to">
+                <option>GameData</option>
+                <option>Ships</option>
+            </select>
+        </label>
+        <br />
+    </div>
+    <div>
+        <button id="generate_netkan" type="button">Generate netkan</button>
+    </div>
+    <div>
+        <label>Output <textarea id="json_output"></textarea></label>
+    </div>
+    <div style="visibility:hidden">
+        <div id="add_license" title="Add license">
+            <div class="ui-widget">
+                <label>Search by name <input type="text" id="add_license_name"></label>
+            </div>
+            <div class="ui-widget">
+                <label>License ID <input type="text" id="add_license_id"></label>
+            </div>
+        </div>
+
+        <p id="github">
+            <label>User name <input type="text" id="github_user" /></label>
+            <br />
+            <label>Repository name <input type="text" id="github_repo" /></label>
+            <br />
+            <label>Asset match <input type="text" id="github_asset_match" /></label>
+        </p>
+        <p id="spacedock">
+            <label>SpaceDock ID <input type="number" id="spacedock_id" /></label>
+        </p>
+        <p id="http">
+            <label>URI <input type="url" id="http_url" /></label>
+        </p>
+    </div>
+</body>
+</html>
