@@ -105,7 +105,7 @@
             sets(install, "file");
             sets(install, "install_to");
             if (install.length) {
-                o["install"] = install;
+                o["install"] = [install];
             }
             $("#json_output").val(JSON.stringify(o));
 
