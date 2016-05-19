@@ -1,3 +1,5 @@
+#! /usr/bin/env python3
+
 # not yet used
 
 # Copyright (c) 2016, Jan Brohl <janbrohl@t-online.de>

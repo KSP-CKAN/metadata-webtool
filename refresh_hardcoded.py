@@ -1,9 +1,20 @@
+#! /usr/bin/env python3
+
+# Copyright (c) 2016, Jan Brohl <janbrohl@t-online.de>
+# All rights reserved.
+
 import json
 import ckan_interface
 
-mandatory_fields = ["abstract", "download", "identifier",
-                    "license", "name", "spec_version",
-                    "version"]
+mandatory_fields = [
+    "abstract",
+    "download",
+    "identifier",
+    "license",
+    "name",
+    "spec_version",
+    "version"
+]
 
 modes_autofill = {
     "github": [
