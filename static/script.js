@@ -45,7 +45,7 @@ function parse_ref_line(line) {
     if (!line) {
         return null;
     }
-    var found = line.search(/[<>=]=/);
+    var found = line.search(/[<>=]=[^<>=]+/);
     if (found == -1) {
         return { "name": line.trim() };
     }
@@ -120,6 +120,13 @@ function generate_netkan() {
     }
 
     var ressources = {};
+
+
+    sets(ressources, "ressources_bugtracker", "bugtracker");
+    sets(ressources, "ressources_license", "license");
+    sets(ressources, "ressources_ci", "ci");
+    sets(ressources, "ressources_spacedock", "spacedock");
+    sets(ressources, "ressources_manual", "manual");
     sets(ressources, "ressources_homepage", "homepage");
     sets(ressources, "ressources_repository", "repository");
     sets(ressources, "ressources_x_screenshot", "x_screenshot")
