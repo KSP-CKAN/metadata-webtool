@@ -34,26 +34,51 @@ modes_autofill = {
     ]
 }
 
+js = """
+var ckan_ids = [];
+var ckan_names = [];
+var ckan_name_to_id = {};
+
+for (var i in ckan_names_ids) {
+    var id = ckan_names_ids[i][1];
+    var name = ckan_names_ids[i][0];
+    if (!ckan_ids.includes(id)) {
+        ckan_ids.push(id);
+    }
+    if (!ckan_names.includes(name)) {
+        ckan_names.push(name);
+    }
+    ckan_name_to_id[name] = id;
+}
+ckan_ids.sort();
+ckan_names.sort();
+"""
+
 
 def main():
-    ckan_ids = ckan_interface.ckan_ids()
-    ckan_ids.sort()
+    ckan = ckan_interface.ckan_full()
+    ckan_ids = sorted(set(e["identifier"] for e in ckan))
+    ckan_names_ids = sorted(
+        set((e["name"].strip(), e["identifier"]) for e in ckan))
     license_ids = ckan_interface.ckan_allowed_license_ids()
     license_ids.sort()
     with open("static/hardcoded.js", "w", encoding="utf-8") as f:
-        f.write("// auto-generated - see refresh_hardcoded.py\n\n")
-
-        f.write("var ckan_ids = ")
-        json.dump(ckan_ids, f, indent="\t", sort_keys=True)
-        f.write(";\n\n")
+        f.write("// auto-generated - see refresh_hardcoded.py\n\"use strict\";\n\n")
 
         f.write("var license_ids = ")
-        json.dump(license_ids, f, indent="\t", sort_keys=True)
+        json.dump(license_ids, f, sort_keys=True)
         f.write(";\n\n")
 
         f.write("var modes_autofill = ")
-        json.dump(modes_autofill, f, indent="\t", sort_keys=True)
+        json.dump(modes_autofill, f, sort_keys=True)
         f.write(";\n\n")
+
+        f.write("var ckan_names_ids = ")
+        json.dump(ckan_names_ids, f, sort_keys=True)
+        f.write(";\n\n")
+
+        f.write(js)
+
 
 if __name__ == "__main__":
     main()

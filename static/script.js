@@ -2,6 +2,7 @@
 * Copyright (c) 2016, Jan Brohl <janbrohl@t-online.de>
 * All rights reserved.
 */
+"use strict";
 
 var mode;
 
@@ -75,7 +76,7 @@ function generate_netkan() {
     seta(o, "author");
     sets(o, "download");
     sets(o, "kref", "$kref");
-    if ($("#add_vref:checked").val()) {
+    if ($("#add_vref_yes:checked").val()) {
         o["$vref"] = "#/ckan/ksp-avc";
     }
     var ressources = {};
@@ -102,6 +103,8 @@ function generate_netkan() {
 
 
 }
+
+
 function add_ref(name) {
     var ar = $("#add_" + name).dialog({
         autoOpen: false,
@@ -120,6 +123,16 @@ function add_ref(name) {
             }
         }
     });
+    var update = function () {
+        var v = $("#add_" + name + "_name").val().trim();
+        var i = ckan_name_to_id[v];
+        if (i) {
+            $("#add_" + name + "_id").val(i);
+        }
+    };
+    $("#add_" + name + "_name").autocomplete({
+        "source": ckan_names
+    }).on("autocompleteclose", update);
     $("#add_" + name + "_id").autocomplete({
         "source": ckan_ids
     });
@@ -131,7 +144,12 @@ function add_ref(name) {
 
 
 $(function () {
+    $("#accordion").accordion();
+
+    $("#add_vref").buttonset();
+
     $("#generate_netkan").button().on("click", generate_netkan);
+
     $("#mode_tabs").tabs();
     update_mode("spacedock");
 
