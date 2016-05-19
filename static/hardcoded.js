@@ -1,4 +1,4 @@
-// auto-generated - see refresh_hardcoded.py
+// auto-generated on 2016-05-19T23:14:27 UTC - see refresh_hardcoded.py
 "use strict";
 
 var mandatory_fields = ["abstract", "download", "identifier", "license", "name", "spec_version", "version"];

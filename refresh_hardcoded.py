@@ -5,6 +5,7 @@
 
 import json
 import ckan_interface
+import datetime
 
 mandatory_fields = [
     "abstract",
@@ -78,8 +79,10 @@ def main():
     license_ids = ckan_interface.ckan_allowed_license_ids()
     license_ids.sort()
     ckan_schema = ckan_interface.ckan_json_schema()
+    now = datetime.datetime.utcnow()
     with open("static/hardcoded.js", "w", encoding="utf-8") as f:
-        f.write("// auto-generated - see refresh_hardcoded.py\n\"use strict\";\n\n")
+        f.write("// auto-generated on " + now.strftime("%Y-%m-%dT%H:%M:%S") +
+                " UTC - see refresh_hardcoded.py\n\"use strict\";\n\n")
 
         f.write("var mandatory_fields = ")
         json.dump(mandatory_fields, f, sort_keys=True)
