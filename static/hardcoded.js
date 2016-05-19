@@ -1085,3 +1085,36 @@ var license_ids = [
 	"unrestricted"
 ];
 
+var modes_autofill = {
+	"github": [
+		"author",
+		"download",
+		"download_hash",
+		"download_size",
+		"resources.repository",
+		"version"
+	],
+	"http": [
+		"download",
+		"download_content_type",
+		"download_hash",
+		"download_size"
+	],
+	"other": [],
+	"spacedock": [
+		"abstract",
+		"author",
+		"download",
+		"download_hash",
+		"download_size",
+		"ksp_version",
+		"license",
+		"name",
+		"resources.homepage",
+		"resources.repository",
+		"resources.spacedock",
+		"resources.x_screenshot",
+		"version"
+	]
+};
+
