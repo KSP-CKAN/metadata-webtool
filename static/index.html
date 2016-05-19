@@ -19,16 +19,53 @@
     <script src="script.js"></script>
 </head>
 <body>
-    <div id="mode_buttons">
-        <button type="button" onclick="update_mode('spacedock');" id="spacedock_button">SpaceDock</button>
-        <button type="button" onclick="update_mode('github');" id="github_button">GitHub</button>
-        <button type="button" onclick="update_mode('http');" id="http_button">HTTP(S)</button>
-        <button type="button" onclick="update_mode('other');" id="other_button">Other</button>
+    <div id="mode_tabs">
+        <ul>
+            <li><a onclick="update_mode('spacedock');" href="#tab_spacedock">SpaceDock</a></li>
+            <li><a onclick="update_mode('github');" href="#tab_github">GitHub</a></li>
+            <li><a onclick="update_mode('http');" href="#tab_http">HTTP(S)</a></li>
+            <li><a onclick="update_mode('other');" href="#tab_other">Other</a></li>
+        </ul>
+        <div id="tab_spacedock">
+            <ol>
+                <li>
+                    <label>SpaceDock ID <input type="number" id="spacedock_id" required="required" /></label>
+                </li>
+                <li>
+                    <button type="button">Proceed</button>
+                </li>
+            </ol>
+
+        </div>
+        <div id="tab_github">
+            <ol>
+                <li>
+                    <label>User name <input type="text" id="github_user" required="required" /></label>
+                </li>
+                <li>
+                    <label>Repository name <input type="text" id="github_repo" required="required" /></label>
+                </li>
+                <li>
+                    <label>Asset match <input type="text" id="github_asset_match" /></label>
+                </li>
+                <li>
+                    <button type="button">Proceed</button>
+                </li>
+            </ol>
+        </div>
+        <div id="tab_http">
+            <ol>
+                <li>
+                    <label>URI <input type="url" id="http_url" required="required" /></label>
+                </li>
+                <li>
+                    <button type="button">Proceed</button>
+                </li>
+            </ol>
+        </div>
+        <div id="tab_other"></div>
     </div>
-    <hr />
-    <div id="mode_input">
-    </div>
-    <hr />
+    <div></div>
     <ol>
         <li>
             <label>Name <input type="text" id="name" placeholder="User-friendly name for the mod" /></label>
@@ -63,30 +100,66 @@
         <li>
             <label>Licenses <textarea id="license"></textarea></label>
             <button type="button" id="add_license_button">Add</button>
+            <div id="add_license" title="Add license">
+                <a href="https://github.com/KSP-CKAN/CKAN/blob/master/Spec.md#license" target="_blank">About valid licenses</a>
+                <div class="ui-widget">
+                    <label>License ID <input type="text" id="add_license_id"></label>
+                </div>
+            </div>
         </li>
         <li>
             <label>Depends on <textarea id="depends"></textarea></label>
             <button type="button" id="add_depends_button">Add</button>
+            <div id="add_depends" title="Add requirement">
+                <div class="ui-widget">
+                    <label>Requirement ID <input type="text" id="add_depends_id"></label>
+                </div>
+            </div>
         </li>
         <li>
             <label>Recommends <textarea id="recommends"></textarea></label>
             <button type="button" id="add_recommends_button">Add</button>
+            <div id="add_recommends" title="Add recommendation">
+                <div class="ui-widget">
+                    <label>Recommendation ID <input type="text" id="add_recommends_id"></label>
+                </div>
+            </div>
         </li>
         <li>
             <label>Suggests <textarea id="suggests"></textarea></label>
             <button type="button" id="add_suggests_button">Add</button>
+            <div id="add_suggests" title="Add suggestion">
+                <div class="ui-widget">
+                    <label>Suggestion ID <input type="text" id="add_suggests_id"></label>
+                </div>
+            </div>
         </li>
         <li>
             <label>Supports <textarea id="supports"></textarea></label>
             <button type="button" id="add_supports_button">Add</button>
+            <div id="add_supports" title="Add supported">
+                <div class="ui-widget">
+                    <label>Supported ID <input type="text" id="add_supports_id"></label>
+                </div>
+            </div>
         </li>
         <li>
             <label>Provides <textarea id="provides"></textarea></label>
             <button type="button" id="add_provides_button">Add</button>
+            <div id="add_provides" title="Add provided">
+                <div class="ui-widget">
+                    <label>Provided ID <input type="text" id="add_provides_id"></label>
+                </div>
+            </div>
         </li>
         <li>
             <label>Conflicts with <textarea id="conflicts"></textarea></label>
             <button type="button" id="add_conflicts_button">Add</button>
+            <div id="add_conflicts" title="Add conflicted">
+                <div class="ui-widget">
+                    <label>Conflicted ID <input type="text" id="add_conflicts_id"></label>
+                </div>
+            </div>
         </li>
         <li>
             <label>Install Root <input type="text" id="file" /></label>
@@ -110,73 +183,14 @@
         <li>
             <label>$kref <input type="text" id="kref" /></label>
         </li>
+        <li>
+            <button id="generate_netkan" type="button">Generate netkan</button>
+        </li>
     </ol>
-    <div>
-        <button id="generate_netkan" type="button">Generate netkan</button>
-    </div>
     <div>
         <label>Output <textarea id="json_output"></textarea></label>
     </div>
-    <div style="visibility:hidden">
-        <div id="add_license" title="Add license">
-            <a href="https://github.com/KSP-CKAN/CKAN/blob/master/Spec.md#license" target="_blank">About valid licenses</a>
-            <div class="ui-widget">
-                <label>License ID <input type="text" id="add_license_id"></label>
-            </div>
-        </div>
-        <div id="add_depends" title="Add requirement">
-            <div class="ui-widget">
-                <label>Requirement ID <input type="text" id="add_depends_id"></label>
-            </div>
-        </div>
-        <div id="add_recommends" title="Add recommendation">
-            <div class="ui-widget">
-                <label>Recommendation ID <input type="text" id="add_recommends_id"></label>
-            </div>
-        </div>
-        <div id="add_suggests" title="Add suggestion">
-            <div class="ui-widget">
-                <label>Suggestion ID <input type="text" id="add_suggests_id"></label>
-            </div>
-        </div>
-        <div id="add_supports" title="Add supported">
-            <div class="ui-widget">
-                <label>Supported ID <input type="text" id="add_supports_id"></label>
-            </div>
-        </div>
-        <div id="add_provides" title="Add provided">
-            <div class="ui-widget">
-                <label>Provided ID <input type="text" id="add_provides_id"></label>
-            </div>
-        </div>
-        <div id="add_conflicts" title="Add conflicted">
-            <div class="ui-widget">
-                <label>Conflicted ID <input type="text" id="add_conflicts_id"></label>
-            </div>
-        </div>
 
-        <ol id="github">
-            <li>
-                <label>User name <input type="text" id="github_user" required="required" /></label>
-            </li>
-            <li>
-                <label>Repository name <input type="text" id="github_repo" required="required" /></label>
-            </li>
-            <li>
-                <label>Asset match <input type="text" id="github_asset_match" /></label>
-            </li>
-        </ol>
-        <ul id="spacedock">
-            <li>
-                <label>SpaceDock ID <input type="number" id="spacedock_id" required="required" /></label>
-            </li>
-        </ul>
-        <ul id="http">
-            <li>
-                <label>URI <input type="url" id="http_url" required="required" /></label>
-            </li>
-        </ul>
-    </div>
     <small>
         Copyright (c) 2016, Jan Brohl
         <br />

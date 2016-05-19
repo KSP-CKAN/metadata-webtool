@@ -4,18 +4,10 @@
 */
 
 var mode;
-var modes_autofill = {
-    "spacedock": ['name', 'license', 'abstract', 'author', 'version', 'download', 'download_size', 'download_hash', 'resources.homepage', 'resources.spacedock', 'resources.repository', 'resources.x_screenshot', 'ksp_version'],
-    "github": ['author', 'version', 'download', 'download_size', 'download_hash', 'resources.repository'],
-    "http": ['download', 'download_size', 'download_hash', 'download_content_type'],
-    "other": []
-};
+
 
 function update_mode(new_mode) {
     mode = new_mode;
-    var mi = $("#mode_input");
-    mi.empty();
-    mi.append($("#" + mode).clone());
 }
 function generate_netkan() {
     var o = {
@@ -140,7 +132,8 @@ function add_ref(name) {
 
 $(function () {
     $("#generate_netkan").button().on("click", generate_netkan);
-    $("#mode_buttons").buttonset();
+    $("#mode_tabs").tabs();
+    update_mode("spacedock");
 
     var al = $("#add_license").dialog({
         autoOpen: false,
