@@ -21,10 +21,10 @@
 <body>
     <div id="mode_tabs">
         <ul>
-            <li><a onclick="update_mode('spacedock');" href="#tab_spacedock">SpaceDock</a></li>
-            <li><a onclick="update_mode('github');" href="#tab_github">GitHub</a></li>
-            <li><a onclick="update_mode('http');" href="#tab_http">HTTP(S)</a></li>
-            <li><a onclick="update_mode('other');" href="#tab_other">Other</a></li>
+            <li><a href="#tab_spacedock">SpaceDock</a></li>
+            <li><a href="#tab_github">GitHub</a></li>
+            <li><a href="#tab_http">HTTP(S)</a></li>
+            <li><a href="#tab_other">Other</a></li>
         </ul>
         <div id="tab_spacedock">
             <ol>
@@ -32,7 +32,7 @@
                     <label>SpaceDock ID <input type="number" id="spacedock_id" required="required" /></label>
                 </li>
                 <li>
-                    <button type="button">Proceed</button>
+                    <button type="button" onclick="proceed_spacedock()">Proceed</button>
                 </li>
             </ol>
 
@@ -46,10 +46,7 @@
                     <label>Repository name <input type="text" id="github_repo" required="required" /></label>
                 </li>
                 <li>
-                    <label>Asset match <input type="text" id="github_asset_match" /></label>
-                </li>
-                <li>
-                    <button type="button">Proceed</button>
+                    <button type="button" onclick="proceed_github()">Proceed</button>
                 </li>
             </ol>
         </div>
@@ -59,14 +56,14 @@
                     <label>URI <input type="url" id="http_url" required="required" /></label>
                 </li>
                 <li>
-                    <button type="button">Proceed</button>
+                    <button type="button" onclick="proceed_http()">Proceed</button>
                 </li>
             </ol>
         </div>
         <div id="tab_other">
             <ol>
                 <li>
-                    <button type="button">Proceed</button>
+                    <button type="button" onclick="proceed_other()">Proceed</button>
                 </li>
             </ol>
         </div>
