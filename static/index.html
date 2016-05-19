@@ -15,6 +15,10 @@
             /* prevent horizontal scrollbar */
             overflow-x: hidden;
         }
+
+        code {
+            background-color: lightgray;
+        }
     </style>
     <script src="script.js"></script>
 </head>
@@ -79,11 +83,7 @@
                     <label>Name <input type="text" id="name" placeholder="User-friendly name for the mod" /></label>
                 </li>
                 <li>
-                    Installs <code>.version</code> file
-                    <div id="add_vref">
-                        <input type="radio" name="add_vref" id="add_vref_yes" value="1" /><label for="add_vref_yes">Yes</label>
-                        <input type="radio" name="add_vref" id="add_vref_no" value="0" checked="checked" /><label for="add_vref_no">No</label>
-                    </div>
+                    <label><input type="checkbox" id="add_vref" value="1" /> Installs <code>.version</code> file</label>
                 </li>
                 <li>
                     <label>Abstract <textarea id="abstract" placeholder="A short description of what the mod does"></textarea></label>
@@ -111,7 +111,10 @@
         <div id="extra_fields">
             <ol>
                 <li>
-                    <label>KSP-Version <input type="text" id="ksp_version" /></label>
+                    <label>KSP-Version <input type="text" id="ksp_version" /></label> examples: <code>==1.0</code> or <code>&lt;=1.1&gt;=1.0.3</code>
+                </li>
+                <li>
+                    <label><input type="checkbox" id="add_ksp_version_strict" value="1" /> Install only on exact KSP-Version match</label>
                 </li>
             </ol>
 

@@ -115,7 +115,7 @@ function generate_netkan() {
     seta(o, "author");
     sets(o, "download");
     sets(o, "kref", "$kref");
-    if ($("#add_vref_yes:checked").val()) {
+    if ($("#add_vref:checked").val()) {
         o["$vref"] = "#/ckan/ksp-avc";
     }
 
@@ -133,17 +133,25 @@ function generate_netkan() {
     if (install.length) {
         o["install"] = [install];
     }
+    var ksp_ver_raw = get_val("ksp_version");
+    var ksp_ver = parse_ref_line("ksp" + ksp_ver_raw);
+    if (ksp_ver.name == "ksp") {
+        if (ksp_ver.version) {
+            o["ksp_version"] = ksp_ver.version;
+        }
+        if (ksp_ver.min_version) {
+            o["ksp_version_min"] = ksp_ver.min_version;
+        }
+        if (ksp_ver.max_version) {
+            o["ksp_version_max"] = ksp_ver.max_version;
+        }
+    } else if (ksp_ver_raw && ksp_ver_raw.length) {
+        o["ksp_version"] = ksp_ver_raw;
+    }
+    if ($("#add_ksp_version_strict:checked").val()) {
+        o["ksp_version_strict"] = true;
+    }
 
-    var ksp_ver = parse_ref_line("ksp " + get_val("ksp_version"));
-    if (ksp_ver.version) {
-        o["ksp_version"] = ksp_ver.version;
-    }
-    if (ksp_ver.min_version) {
-        o["ksp_version_min"] = ksp_ver.min_version;
-    }
-    if (ksp_ver.max_version) {
-        o["ksp_version_max"] = ksp_ver.max_version;
-    }
 
     setrel(o, "depends");
     setrel(o, "recommends");
@@ -205,6 +213,7 @@ $(function () {
     });
 
     $("#add_vref").buttonset();
+    $("#add_ksp_version_strict").buttonset();
 
     $("#generate_netkan").button().on("click", generate_netkan);
 
