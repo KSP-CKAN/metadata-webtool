@@ -1,6 +1,10 @@
 import json
 import ckan_interface
 
+mandatory_fields = ["abstract", "download", "identifier",
+                    "license", "name", "spec_version",
+                    "version"]
+
 modes_autofill = {
     "github": [
         "author",
@@ -64,6 +68,10 @@ def main():
     license_ids.sort()
     with open("static/hardcoded.js", "w", encoding="utf-8") as f:
         f.write("// auto-generated - see refresh_hardcoded.py\n\"use strict\";\n\n")
+
+        f.write("var mandatory_fields = ")
+        json.dump(mandatory_fields, f, sort_keys=True)
+        f.write(";\n\n")
 
         f.write("var license_ids = ")
         json.dump(license_ids, f, sort_keys=True)

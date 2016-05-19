@@ -9,6 +9,15 @@ var mode;
 
 function update_mode(new_mode) {
     mode = new_mode;
+    for (var i in mandatory_fields) {
+        var name = mandatory_fields[i];
+        $("#" + name).attr("required", "required");
+    }
+    var ma = modes_autofill[mode];
+    for (var i in ma) {
+        var name = ma[i].replace(".", "_");
+        $("#" + name).removeAttr("required");
+    }
 }
 function generate_netkan() {
     var o = {
@@ -144,7 +153,12 @@ function add_ref(name) {
 
 
 $(function () {
-    $("#accordion").accordion();
+
+
+
+    $("#accordion").accordion({
+        heightStyle: "content"
+    });
 
     $("#add_vref").buttonset();
 
