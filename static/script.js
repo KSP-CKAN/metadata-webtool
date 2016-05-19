@@ -1,4 +1,9 @@
-﻿var mode;
+﻿/*
+* Copyright (c) 2016, Jan Brohl <janbrohl@t-online.de>
+* All rights reserved.
+*/
+
+var mode;
 var modes_autofill = {
     "spacedock": ['name', 'license', 'abstract', 'author', 'version', 'download', 'download_size', 'download_hash', 'resources.homepage', 'resources.spacedock', 'resources.repository', 'resources.x_screenshot', 'ksp_version'],
     "github": ['author', 'version', 'download', 'download_size', 'download_hash', 'resources.repository'],

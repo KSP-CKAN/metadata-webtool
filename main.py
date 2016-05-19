@@ -1,5 +1,9 @@
 # not yet used
 
+# Copyright (c) 2016, Jan Brohl <janbrohl@t-online.de>
+# All rights reserved.
+
+
 import json
 import bottle
 from urllib.request import urlopen
@@ -16,13 +20,13 @@ def ckan_ids():
 
 
 @app.get("/check_spacedock")
-def check_spacedock():
+def check_spacedock():  # incomplete
     data = bottle.request.json
     sdid = data["spacedock_id"]
 
 
 @app.get("/check_github")
-def check_github():
+def check_github():  # incomplete
     data = bottle.request.json
     user = data["github_user"]
     repo = data["github_repo"]
@@ -30,7 +34,7 @@ def check_github():
 
 
 @app.get("/check_http")
-def check_http():
+def check_http():  # incomplete
     data = bottle.request.json
     url = data["http_url"]
 
