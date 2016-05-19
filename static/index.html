@@ -110,8 +110,17 @@
 
             </ol>
         </div>
-        <h3>Suggested</h3>
-        <div id="suggested_fields">
+        <h3>Extra Info (suggested)</h3>
+        <div id="extra_fields">
+            <ol>
+                <li>
+                    <label>KSP-Version <input type="text" id="ksp_version" /></label>
+                </li>
+            </ol>
+
+        </div>
+        <h3>Ressources (suggested)</h3>
+        <div id="ressources_fields">
             <ol>
                 <li>
                     <label>Repository <input type="url" id="ressources_repository" /></label>
@@ -122,13 +131,10 @@
                 <li>
                     <label>Screenshot <input type="url" id="ressources_x_screenshot" /></label>
                 </li>
-                <li>
-                    <label>KSP-Version <input type="text" id="ksp_version" /></label>
-                </li>
             </ol>
         </div>
-        <h3>Special</h3>
-        <div id="special_fields">
+        <h3>Special Install</h3>
+        <div id="install_fields">
             <ol>
                 <li>
                     <label>Install Root <input type="text" id="file" /></label>
@@ -149,6 +155,11 @@
                         </select>
                     </label>
                 </li>
+            </ol>
+        </div>
+        <h3>References</h3>
+        <div id="references_fields">
+            <ol>
                 <li>
                     <label>Depends on <textarea id="depends"></textarea></label>
                     <button type="button" id="add_depends_button">Add</button>
@@ -197,18 +208,7 @@
                         </div>
                     </div>
                 </li>
-                <li>
-                    <label>Provides <textarea id="provides"></textarea></label>
-                    <button type="button" id="add_provides_button">Add</button>
-                    <div id="add_provides" title="Add provided">
-                        <div class="ui-widget">
-                            <label>Search by name<input type="text" id="add_provides_name"></label>
-                        </div>
-                        <div class="ui-widget">
-                            <label>Provided ID <input type="text" id="add_provides_id"></label>
-                        </div>
-                    </div>
-                </li>
+
                 <li>
                     <label>Conflicts with <textarea id="conflicts"></textarea></label>
                     <button type="button" id="add_conflicts_button">Add</button>
@@ -223,8 +223,26 @@
                 </li>
             </ol>
         </div>
-        <h3><em>Very</em> Special</h3>
-        <div id="very_special_fields">
+        <h3>Advanced</h3>
+        <div id="advanced_fields">
+            <ol>
+                <li>
+                    <label>Provides <textarea id="provides"></textarea></label>
+                    <button type="button" id="add_provides_button">Add</button>
+                    <div id="add_provides" title="Add provided">
+                        <div class="ui-widget">
+                            <label>Search by name<input type="text" id="add_provides_name"></label>
+                        </div>
+                        <div class="ui-widget">
+                            <label>Provided ID <input type="text" id="add_provides_id"></label>
+                        </div>
+                    </div>
+                </li>
+
+            </ol>
+        </div>
+        <h3>Don't Touch</h3>
+        <div id="dont_touch_fields">
             <ol>
                 <li>
                     <label>$kref <input type="text" id="kref" /></label>
