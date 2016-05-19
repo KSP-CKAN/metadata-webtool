@@ -29,61 +29,88 @@
     <div id="mode_input">
     </div>
     <hr />
-    <div>
-        <label>Name <input type="text" id="name" /></label>
-        <br />
-        <label>Identifier <input type="text" id="identifier" /></label>
-        <br />
-        <label>Download <input type="url" id="download" /></label>
-        <br />
-        <label>Repository <input type="url" id="ressources_repository" /></label>
-        <br />
-        <label>Homepage <input type="url" id="ressources_homepage" /></label>
-        <br />
-        <label>Screenshot <input type="url" id="ressources_x_screenshot" /></label>
-        <br />
-        <label>Authors (one per line) <textarea id="author"></textarea></label>
-        <br />
-        <label><input type="checkbox" id="add_vref" /> Installs <code>.version</code> file</label>
-        <br />
-        <label>KSP-Version <input type="text" id="ksp_version" /></label>
-        <br />
-        <label>$kref <input type="text" id="kref" /></label>
-        <br />
-        <label>Abstract <textarea id="abstract"></textarea></label>
-        <br />
-        <label>Licenses <textarea id="license"></textarea></label> <button type="button" id="add_license_button">Add</button>
-        <br />
-        <label>Depends on <textarea id="depends"></textarea></label> <button type="button" id="add_depends_button">Add</button>
-        <br />
-        <label>Recommends <textarea id="recommends"></textarea></label> <button type="button" id="add_recommends_button">Add</button>
-        <br />
-        <label>Suggests <textarea id="suggests"></textarea></label> <button type="button" id="add_suggests_button">Add</button>
-        <br />
-        <label>Supports <textarea id="supports"></textarea></label> <button type="button" id="add_supports_button">Add</button>
-        <br />
-        <label>Provides <textarea id="provides"></textarea></label> <button type="button" id="add_provides_button">Add</button>
-        <br />
-        <label>Conflicts with <textarea id="conflicts"></textarea> </label><button type="button" id="add_conflicts_button">Add</button>
-        <br />
-        <label>Install Root <input type="text" id="file" /></label>
-        <br />
-        <label>
-            Install to
-            <select id="install_to">
-                <option>GameData</option>
-                <option>Ships</option>
-                <option>Ships/SPH</option>
-                <option>Ships/VAB</option>
-                <option>Ships/@thumbs/VAB</option>
-                <option>Ships/@thumbs/SPH</option>
-                <option>Tutorial</option>
-                <option>Scenarios</option>
-                <option>GameRoot</option>
-            </select>
-        </label>
-        <br />
-    </div>
+    <ol>
+        <li>
+            <label>Name <input type="text" id="name" placeholder="User-friendly name for the mod" /></label>
+        </li>
+        <li>
+            <label>Identifier <input type="text" id="identifier" required="required" placeholder="Machine-friendly name for the mod" /></label>
+        </li>
+        <li>
+            <label>Download <input type="url" id="download" /></label>
+        </li>
+        <li>
+            <label>Repository <input type="url" id="ressources_repository" /></label>
+        </li>
+        <li>
+            <label>Homepage <input type="url" id="ressources_homepage" /></label>
+        </li>
+        <li>
+            <label>Screenshot <input type="url" id="ressources_x_screenshot" /></label>
+        </li>
+        <li>
+            <label>Authors (one per line) <textarea id="author"></textarea></label>
+        </li>
+        <li>
+            <label><input type="checkbox" id="add_vref" /> Installs <code>.version</code> file</label>
+        </li>
+        <li>
+            <label>KSP-Version <input type="text" id="ksp_version" /></label>
+        </li>
+        <li>
+            <label>Abstract <textarea id="abstract" placeholder="A short description of what the mod does"></textarea></label>
+        </li>
+        <li>
+            <label>Licenses <textarea id="license"></textarea></label>
+            <button type="button" id="add_license_button">Add</button>
+        </li>
+        <li>
+            <label>Depends on <textarea id="depends"></textarea></label>
+            <button type="button" id="add_depends_button">Add</button>
+        </li>
+        <li>
+            <label>Recommends <textarea id="recommends"></textarea></label>
+            <button type="button" id="add_recommends_button">Add</button>
+        </li>
+        <li>
+            <label>Suggests <textarea id="suggests"></textarea></label>
+            <button type="button" id="add_suggests_button">Add</button>
+        </li>
+        <li>
+            <label>Supports <textarea id="supports"></textarea></label>
+            <button type="button" id="add_supports_button">Add</button>
+        </li>
+        <li>
+            <label>Provides <textarea id="provides"></textarea></label>
+            <button type="button" id="add_provides_button">Add</button>
+        </li>
+        <li>
+            <label>Conflicts with <textarea id="conflicts"></textarea></label>
+            <button type="button" id="add_conflicts_button">Add</button>
+        </li>
+        <li>
+            <label>Install Root <input type="text" id="file" /></label>
+        </li>
+        <li>
+            <label>
+                Install to
+                <select id="install_to">
+                    <option>GameData</option>
+                    <option>Ships</option>
+                    <option>Ships/SPH</option>
+                    <option>Ships/VAB</option>
+                    <option>Ships/@thumbs/VAB</option>
+                    <option>Ships/@thumbs/SPH</option>
+                    <option>Tutorial</option>
+                    <option>Scenarios</option>
+                    <option>GameRoot</option>
+                </select>
+            </label>
+        </li>
+        <li>
+            <label>$kref <input type="text" id="kref" /></label>
+        </li>
+    </ol>
     <div>
         <button id="generate_netkan" type="button">Generate netkan</button>
     </div>
@@ -92,9 +119,7 @@
     </div>
     <div style="visibility:hidden">
         <div id="add_license" title="Add license">
-            <div class="ui-widget">
-                <label>Search by name <input type="text" id="add_license_name"></label>
-            </div>
+            <a href="https://github.com/KSP-CKAN/CKAN/blob/master/Spec.md#license" target="_blank">About valid licenses</a>
             <div class="ui-widget">
                 <label>License ID <input type="text" id="add_license_id"></label>
             </div>
@@ -130,25 +155,32 @@
             </div>
         </div>
 
-        <p id="github">
-            <label>User name <input type="text" id="github_user" /></label>
-            <br />
-            <label>Repository name <input type="text" id="github_repo" /></label>
-            <br />
-            <label>Asset match <input type="text" id="github_asset_match" /></label>
-        </p>
-        <p id="spacedock">
-            <label>SpaceDock ID <input type="number" id="spacedock_id" /></label>
-        </p>
-        <p id="http">
-            <label>URI <input type="url" id="http_url" /></label>
-        </p>
+        <ol id="github">
+            <li>
+                <label>User name <input type="text" id="github_user" required="required" /></label>
+            </li>
+            <li>
+                <label>Repository name <input type="text" id="github_repo" required="required" /></label>
+            </li>
+            <li>
+                <label>Asset match <input type="text" id="github_asset_match" /></label>
+            </li>
+        </ol>
+        <ul id="spacedock">
+            <li>
+                <label>SpaceDock ID <input type="number" id="spacedock_id" required="required" /></label>
+            </li>
+        </ul>
+        <ul id="http">
+            <li>
+                <label>URI <input type="url" id="http_url" required="required" /></label>
+            </li>
+        </ul>
     </div>
     <small>
         Copyright (c) 2016, Jan Brohl
-        <br />        
+        <br />
         All rights reserved.
-            
-</small>
+    </small>
 </body>
 </html>
