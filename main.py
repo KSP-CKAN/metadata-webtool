@@ -4,19 +4,15 @@
 # All rights reserved.
 
 
-import json
 import bottle
-from urllib.request import urlopen
+import ckan_interface
 
 app = bottle.Bottle()
 
 
 @app.get("/ckan_ids")
 def ckan_ids():
-    with urlopen("https://api.github.com/repos/KSP-CKAN/CKAN-meta/contents") as f:
-        s = f.read().decode("utf-8")
-    ckan_entries = json.loads(s)
-    return {"ids": [e["name"] for e in ckan_entries]}
+    return {"ids": ckan_interface.ids()}
 
 
 @app.get("/check_spacedock")
