@@ -65,8 +65,13 @@ def ckan_last_modified():
     return max(repo_info["updated_at"], repo_info["pushed_at"])
 
 
-def ckan_allowed_license_ids():  # depends on repo layout and file format - risky?
+def ckan_json_schema():
     schema = get_json(
         "https://raw.githubusercontent.com/KSP-CKAN/CKAN/master/CKAN.schema")
+    return schema
+
+
+def ckan_allowed_license_ids():  # depends on repo layout and file format - risky?
+    schema = ckan_json_schema()
     li = schema["definitions"]["license"]
     return li["enum"]

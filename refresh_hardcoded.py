@@ -77,6 +77,7 @@ def main():
         set((e["name"].strip(), e["identifier"]) for e in ckan))
     license_ids = ckan_interface.ckan_allowed_license_ids()
     license_ids.sort()
+    ckan_schema = ckan_interface.ckan_json_schema()
     with open("static/hardcoded.js", "w", encoding="utf-8") as f:
         f.write("// auto-generated - see refresh_hardcoded.py\n\"use strict\";\n\n")
 
@@ -90,6 +91,10 @@ def main():
 
         f.write("var modes_autofill = ")
         json.dump(modes_autofill, f, sort_keys=True)
+        f.write(";\n\n")
+
+        f.write("var ckan_schema = ")
+        json.dump(ckan_schema, f, sort_keys=True)
         f.write(";\n\n")
 
         f.write("var ckan_names_ids = ")

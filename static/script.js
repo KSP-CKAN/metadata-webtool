@@ -164,7 +164,13 @@ function generate_netkan() {
     setrel(o, "supports");
     setrel(o, "conflicts");
     setrel(o, "provides");
-    $("#json_output").val(JSON.stringify(o));
+
+    var schema_vaild = tv4.validate(o, ckan_schema);
+    if (!schema_vaild) {
+        alert("Not valid as .ckan, but maybe valid as .netkan - who knows?\n\n" + JSON.stringify(tv4.error, null, "\t"));
+    }
+
+    $("#json_output").val(JSON.stringify(o, null, "\t"));
 
 
 
