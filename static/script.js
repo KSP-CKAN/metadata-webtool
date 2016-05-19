@@ -120,8 +120,6 @@ function generate_netkan() {
     }
 
     var ressources = {};
-
-
     sets(ressources, "ressources_bugtracker", "bugtracker");
     sets(ressources, "ressources_license", "license");
     sets(ressources, "ressources_ci", "ci");
