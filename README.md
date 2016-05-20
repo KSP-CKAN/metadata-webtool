@@ -1,16 +1,14 @@
-CKAN-Metadata-Generator
-#######################
+# CKAN-Metadata-Generator
 
-Current Status
-==============
+
+##Current Status
 
 Not actually bug-free to be positive. ;)
 
 Neither actually well documented.
 
 
-Original Mission
-================
+##Original Mission
 
 What's currently specified is just a base to create brand new netkans for not-yet-hosted mods. Eventually expanding the UI to allow editing existing metadata would be great, but is likely much more in-depth.
 
@@ -18,8 +16,7 @@ Primarily this is a web form which results in a JSON file that is sent in a PR t
 Spacedock, github, and all other hosts (curse will be a kref-able source in the near future) are the current workflow determinants.
 
 
-How to make it work
-===================
+##How to make it work
 
 Currently the Python stuff (*.py) is not yet needed for trying it out.
 
