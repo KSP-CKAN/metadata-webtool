@@ -85,10 +85,10 @@
         <div>
             <ol id="mandatory_fields">
                 <li>
-                    <label>Identifier<br /><input type="text" id="identifier" placeholder="Machine-friendly name for the mod" size="40" /></label>
+                    <label>Identifier<br /><input type="text" id="identifier" placeholder="Machine-friendly name for the mod" size="40" pattern="^[A-Za-z][A-Za-z0-9-]*$" /></label> <em id="identifier_info"></em>
                 </li>
                 <li>
-                    <label>Name<br /><input type="text" id="name" placeholder="User-friendly name for the mod" size="40" /></label>
+                    <label>Name<br /><input type="text" id="name" placeholder="User-friendly name for the mod" size="40" /></label> <em id="name_info"></em>
                 </li>
                 <li>
                     <label><input type="checkbox" id="add_vref" value="1" onchange="switch_add_vref()" /> Installs <code>.version</code> file</label>
@@ -107,7 +107,7 @@
                 </li>
                 <li>
                     <label>Licenses<br /><textarea id="license" cols="40"></textarea></label>
-                    <button type="button" id="add_license_button">Add</button>
+                    <button type="button" id="add_license_button">Add</button> Users can choose to which of these to adhere
                     <div id="add_license" title="Add license">
                         <a href="https://github.com/KSP-CKAN/CKAN/blob/master/Spec.md#license" target="_blank">About valid licenses</a>
                         <div class="ui-widget">
@@ -275,6 +275,9 @@
             <ol>
                 <li>
                     <label>$kref<br /><input type="text" id="kref" size="40" /></label>
+                </li>
+                <li>
+                    <label>Update JSON<br /><textarea id="update_json" size="40">{}</textarea></label>
                 </li>
             </ol>
         </div>

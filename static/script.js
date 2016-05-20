@@ -172,6 +172,19 @@ function generate_netkan() {
     setrel(o, "conflicts");
     setrel(o, "provides");
 
+    var uj = get_val("update_json");
+    var ujo;
+    try {
+        ujo = JSON.parse(uj);
+    } catch (err) {
+        alert("Update JSON field not applied\n\n" + err);
+    }
+    if (ujo) {
+        for (var key in ujo) {
+            o[key] = ujo[key];
+        }
+    }
+
     var validation_result = tv4.validateMultiple(o, ckan_schema);
     if (!validation_result.valid) {
         var e = validation_result.errors;
@@ -235,7 +248,22 @@ function switch_add_vref() {
 }
 
 $(function () {
-
+    var idcheck = function () {
+        if (ckan_ids.includes(get_val("identifier"))) {
+            $("#identifier_info").text("Identifier already in use");
+        } else {
+            $("#identifier_info").empty();
+        }
+    };
+    $("#identifier").change(idcheck).blur(idcheck).on("input", idcheck);
+    var namecheck = function () {
+        if (ckan_names.includes(get_val("name"))) {
+            $("#name_info").text("Name already in use");
+        } else {
+            $("#name_info").empty();
+        }
+    };
+    $("#name").change(namecheck).blur(namecheck).on("input", namecheck);
 
 
     $("#accordion").accordion({
