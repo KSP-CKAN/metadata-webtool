@@ -11,16 +11,23 @@ function get_val(id) {
 }
 
 function update_mode(new_mode) {
+    var old_mode = mode;
     mode = new_mode;
     for (var i in mandatory_fields) {
         var name = mandatory_fields[i];
         $("#" + name).attr("required", "required");
     }
+    var oma = modes_autofill[old_mode];
+    for (var i in oma) {
+        var name = oma[i].replace(".", "_");
+        $("#" + name).removeClass("filled-by-netkan");
+    }
     var ma = modes_autofill[mode];
     for (var i in ma) {
         var name = ma[i].replace(".", "_");
-        $("#" + name).removeAttr("required");
+        $("#" + name).removeAttr("required").addClass("filled-by-netkan");
     }
+    switch_add_vref();
 }
 function proceed_spacedock() {
     update_mode("spacedock");
@@ -119,17 +126,17 @@ function generate_netkan() {
         o["$vref"] = "#/ckan/ksp-avc";
     }
 
-    var ressources = {};
-    sets(ressources, "ressources_bugtracker", "bugtracker");
-    sets(ressources, "ressources_license", "license");
-    sets(ressources, "ressources_ci", "ci");
-    sets(ressources, "ressources_spacedock", "spacedock");
-    sets(ressources, "ressources_manual", "manual");
-    sets(ressources, "ressources_homepage", "homepage");
-    sets(ressources, "ressources_repository", "repository");
-    sets(ressources, "ressources_x_screenshot", "x_screenshot")
-    if (ressources.length) {
-        o["ressources"] = ressources;
+    var resources = {};
+    sets(resources, "resources_bugtracker", "bugtracker");
+    sets(resources, "resources_license", "license");
+    sets(resources, "resources_ci", "ci");
+    sets(resources, "resources_spacedock", "spacedock");
+    sets(resources, "resources_manual", "manual");
+    sets(resources, "resources_homepage", "homepage");
+    sets(resources, "resources_repository", "repository");
+    sets(resources, "resources_x_screenshot", "x_screenshot")
+    if (resources.length) {
+        o["resources"] = resources;
     }
 
     var install = {}
@@ -165,9 +172,14 @@ function generate_netkan() {
     setrel(o, "conflicts");
     setrel(o, "provides");
 
-    var schema_vaild = tv4.validate(o, ckan_schema);
-    if (!schema_vaild) {
-        alert("Not valid as .ckan, but maybe valid as .netkan - who knows?\n\n" + JSON.stringify(tv4.error, null, "\t"));
+    var validation_result = tv4.validateMultiple(o, ckan_schema);
+    if (!validation_result.valid) {
+        var e = validation_result.errors;
+        var msg = "Not valid as .ckan, but maybe valid as .netkan - who knows?\n\nErrors:";
+        for (var i = 0; i < e.length; i++) {
+            msg = msg + "\n" + e[i].message;
+        }
+        alert(msg);
     }
 
     $("#json_output").val(JSON.stringify(o, null, "\t"));
@@ -214,6 +226,13 @@ function add_ref(name) {
     });
 }
 
+function switch_add_vref() {
+    if ($("#add_vref:checked").val() || modes_autofill[mode].includes("version")) {
+        $("#version").addClass("filled-by-netkan");
+    } else {
+        $("#version").removeClass("filled-by-netkan");
+    }
+}
 
 $(function () {
 
@@ -223,7 +242,6 @@ $(function () {
         heightStyle: "content"
     });
 
-    $("#add_vref").buttonset();
     $("#add_ksp_version_strict").buttonset();
 
     $("#generate_netkan").button().on("click", generate_netkan);
