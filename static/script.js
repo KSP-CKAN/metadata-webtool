@@ -36,7 +36,16 @@ function proceed_spacedock() {
 
 function proceed_github() {
     update_mode("github");
-    $("#kref").val("#/ckan/github/" + get_val("github_user") + "/" + get_val("github_repo"));
+    var k = "#/ckan/github/" + get_val("github_user") + "/" + get_val("github_repo");
+    var am = get_val("github_asset_match");
+    var fr = get_val("github_filter_regexp");
+    if (am && am.length) {
+        k = k + "/" + am;
+        if (fr && fr.length) {
+            k = k + "/" + fr;
+        }
+    }
+    $("#kref").val(k);
 }
 
 function proceed_http() {
@@ -44,8 +53,91 @@ function proceed_http() {
     $("#kref").val("#/ckan/http/" + get_val("http_url"));
 }
 
+function proceed_kref() {
+    var sd = "#/ckan/spacedock/";
+    var gh = "#/ckan/github/";
+    var h = "#/ckan/http/";
+
+    var k = get_val("kref_kref");
+    if (k.indexOf(sd) == 0) {
+        $("#spacedock_id").val(k.substring(sd.length).replace("/", ""));
+        return proceed_spacedock();
+    } else if (k.indexOf(gh) == 0) {
+        var ghs = k.substring(gh.length).split("/", 4);
+        $("#github_user").val(ghs[0]);
+        $("#github_repo").val(ghs[1]);
+        $("#github_asset_match").val(ghs[2]);
+        $("#github_filter_regexp").val(ghs[3]);
+        return proceed_spacedock();
+
+    } else if (k.indexOf(h) == 0) {
+        $("#http_url").val(k.substring(h.length));
+        return proceed_http();
+    }
+}
+function proceed_edit() {
+    var o = JSON.parse(get_val("edit_json"));
+    var ref_fields = ["depends", "recommends", "suggests", "supports", "conflicts", "provides"];
+    var not_mapped = ["resources", "install",
+        "depends", "recommends", "suggests", "supports", "conflicts", "provides",
+        "ksp_version_strict", "ksp_version", "ksp_version_min", "ksp_version_max",
+        "$vref"
+    ];
+    for (var key in o) {
+        if (!not_mapped.includes("key")) {
+            $("#" + key).val(o[key]);
+        }
+    }
+    var res = o.resources;
+    if (res) {
+        for (var key in res) {
+            $("#resources_" + key).val(res[key]);
+        }
+    }
+    for (var i in ref_fields) {
+        var k = ref_fields[i];
+        var refa = o[k];
+        if (refa) {
+            var s = "";
+            for (var j in refa) {
+                s = s + stringify_ref(refa[j]);
+            }
+            $("#" + k).val(s);
+        }
+    }
+    if (o["$vref"]) {
+        $("#add_vref").attr("checked", "checked");
+    } else {
+        $("#add_vref").removeAttr("checked");
+    }
+    var ksp = { "name": "", "version": o.ksp_version, "min_version": o.ksp_version_min, "max_version": o.ksp_version_max };
+    $("#ksp_version").val(stringify_ref(ksp));
+    if (o["ksp_version_strict"]) {
+        $("#add_ksp_version_strict").attr("checked", "checked");
+    } else {
+        $("#add_ksp_version_strict").removeAttr("checked");
+    }
+
+    $("#kref_kref").val(o["$kref"]);
+    proceed_kref();
+}
+
 function proceed_other() {
     update_mode("other");
+}
+
+function stringify_ref(ref) {
+    var s = ref.name;
+    if (ref.version) {
+        s = s + " ==" + ref.version;
+    }
+    if (ref.max_version) {
+        s = s + " <=" + ref.version;
+    }
+    if (ref.min_version) {
+        s = s + " >=" + ref.version;
+    }
+    return s;
 }
 
 function parse_ref_line(line) {

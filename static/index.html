@@ -33,6 +33,8 @@
             <li><a href="#tab_spacedock">SpaceDock</a></li>
             <li><a href="#tab_github">GitHub</a></li>
             <li><a href="#tab_http">HTTP(S)</a></li>
+            <li><a href="#tab_kref">Raw $kref</a></li>
+            <li><a href="#tab_edit">Edit existing</a></li>
             <li><a href="#tab_other">Other</a></li>
         </ul>
         <div id="tab_spacedock">
@@ -55,6 +57,12 @@
                     <label>Repository name<br /><input type="text" id="github_repo" required="required" size="40" /></label>
                 </li>
                 <li>
+                    <label>Asset Match<br /><input type="text" id="github_asset_match" required="required" size="40" /></label>
+                </li>
+                <li>
+                    <label>Filter Regular Expression<br /><input type="text" id="github_filter_regexp" required="required" size="40" /></label> Case-sensitive C#
+                </li>
+                <li>
                     <button type="button" onclick="proceed_github()">Proceed</button>
                 </li>
             </ol>
@@ -66,6 +74,28 @@
                 </li>
                 <li>
                     <button type="button" onclick="proceed_http()">Proceed</button>
+                </li>
+            </ol>
+        </div>
+        <div id="tab_kref">
+            <p>Must start with any of: <code>#/ckan/spacedock/</code> , <code>#/ckan/github/</code> , <code>#/ckan/http/</code></p>
+            <ol>
+                <li>
+                    <label>$kref<br /><input type="text" id="kref_kref" size="40" /></label>
+                </li>
+                <li>
+                    <button type="button" onclick="proceed_other()">Proceed</button>
+                </li>
+            </ol>
+        </div>
+        <div id="tab_edit">
+            <p>Loading files from the index repository might be implemented later</p>
+            <ol>
+                <li>
+                    <label>NetKAN File Contents<br /><textarea id="edit_json" cols="40"></textarea></label>
+                </li>
+                <li>
+                    <button type="button" onclick="proceed_other()">Proceed</button>
                 </li>
             </ol>
         </div>
