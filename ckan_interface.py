@@ -31,15 +31,16 @@ def get_full(url, ext):
         return load_tar(f, ext)
 
 CKAN_EXT = ".ckan"
-NETKAN_EXT = ".netkan"
+NETKAN_ACTIVE_EXT = ".netkan"
+NETKAN_FROZEN_EXT = ".frozen"
 
 
 def ckan_full():
     return get_full("https://github.com/KSP-CKAN/CKAN-meta/archive/master.tar.gz", CKAN_EXT)
 
 
-def netkan_full():
-    return get_full("https://github.com/KSP-CKAN/NetKAN/archive/master.tar.gz", NETKAN_EXT)
+def netkan_active_full():
+    return get_full("https://github.com/KSP-CKAN/NetKAN/archive/master.tar.gz", NETKAN_ACTIVE_EXT)
 
 
 def ckan_ids():  # depends on repo layout
@@ -48,11 +49,18 @@ def ckan_ids():  # depends on repo layout
     return [e["name"] for e in ckan_dirs]
 
 
-def netkan_ids():  # depends on repo layout
+def netkan_active_ids():  # depends on repo layout
     netkan_files = get_json(
         "https://api.github.com/repos/KSP-CKAN/NetKAN/contents/NetKAN")
-    netkan_ext_len = len(NETKAN_EXT)
-    return [n[:-netkan_ext_len] for n in (e["name"] for e in netkan_files) if n.endswith(NETKAN_EXT)]
+    netkan_ext_len = len(NETKAN_ACTIVE_EXT)
+    return [n[:-netkan_ext_len] for n in (e["name"] for e in netkan_files) if n.endswith(NETKAN_ACTIVE_EXT)]
+
+
+def netkan_frozen_ids():  # depends on repo layout
+    netkan_files = get_json(
+        "https://api.github.com/repos/KSP-CKAN/NetKAN/contents/NetKAN")
+    netkan_ext_len = len(NETKAN_FROZEN_EXT)
+    return [n[:-netkan_ext_len] for n in (e["name"] for e in netkan_files) if n.endswith(NETKAN_FROZEN_EXT)]
 
 
 def ckan_last_modified():
@@ -65,7 +73,7 @@ def ckan_last_modified():
     return max(repo_info["updated_at"], repo_info["pushed_at"])
 
 
-def ckan_json_schema():
+def ckan_json_schema():  # depends on repo layout
     schema = get_json(
         "https://raw.githubusercontent.com/KSP-CKAN/CKAN/master/CKAN.schema")
     return schema
