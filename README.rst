@@ -23,4 +23,4 @@ How to make it work
 
 Currently the Python stuff (*.py) is not yet needed for trying it out.
 
-"Just" install jquery, jqueri-ui, tv4 via bower (bower.json_ and .bowerrc_ already configured) and then open static/index.html_
+"Just" install jquery, jqueri-ui, tv4 via bower (bower.json and .bowerrc already configured) and then open static/index.html
