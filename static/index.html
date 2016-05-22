@@ -108,32 +108,32 @@
         </div>
     </div>
     <p>
-        Fields filled by the NetKAN indexer look like <input type="text" class="filled-by-netkan" disabled="disabled" /> - you can override auto-detection by setting a value yourself. <em>If unsure - don't override.</em>
+        Fields filled by the NetKAN indexer look like <input type="text" class="filled-by-netkan" disabled="disabled" /> - you can override auto-detection by setting a value yourself. <strong>If unsure - don't override.</strong>
     </p>
     <div id="accordion">
         <h3>Mandatory</h3>
         <div>
             <ol id="mandatory_fields">
                 <li>
-                    <label>Identifier - Machine-friendly name for the mod (only numbers, letters, and dashes, no spaces)<br /><input type="text" id="identifier" placeholder="AwesomeMod" size="40" pattern="^[A-Za-z][A-Za-z0-9-]*$" /></label> <em id="identifier_info"></em>
+                    <label>Identifier - Machine-friendly name for the mod (only numbers, letters, and dashes, no spaces)<br /><input type="text" id="identifier" placeholder="AwesomeMod" size="40" pattern="^[A-Za-z][A-Za-z0-9-]*$" /></label> <strong id="identifier_info"></strong>
                 </li>
                 <li>
-                    <label>Name - User-friendly name for the mod<br /><input type="text" id="name" placeholder="Awesome Mod" size="40" /></label> <em id="name_info"></em>
+                    <label>Name - User-friendly name for the mod<br /><input type="text" id="name" placeholder="Awesome Mod" size="40" /></label> <strong id="name_info"></strong>
                 </li>
                 <li>
                     <label><input type="checkbox" id="add_vref" value="1" onchange="switch_add_vref()" /> Installs <code>.version</code> file</label>
                 </li>
                 <li>
-                    <label>Mod version<br /><input type="text" id="version" size="40" /></label>
+                    <label>Mod Version<br /><input type="text" id="version" size="40" /></label>
                 </li>
                 <li>
-                    <label>Abstract - A short description of what the mod does<br /><textarea id="abstract" placeholder="Awesome mod makes everything better!" size="40"></textarea></label>
+                    <label>Abstract - A short description of what the mod does<br /><textarea id="abstract" placeholder="Awesome mod makes everything better!" cols="40" ></textarea></label>
                 </li>
                 <li>
-                    <label>Download URL<br /><input type="url" id="download" size="40" /></label>
+                    <label>Download URI<br /><input type="url" id="download" size="40" /></label>
                 </li>
                 <li>
-                    <label>Mod author(s) (one per line)<br /><textarea id="author" cols="40"></textarea></label>
+                    <label>Mod Authors (one per line)<br /><textarea id="author" cols="40"></textarea></label>
                 </li>
                 <li>
                     <label>License(s)<br /><textarea id="license" cols="40"></textarea></label>
@@ -147,42 +147,48 @@
                 </li>
                 <li>
                     <label>KSP-Version<br /><input type="text" id="ksp_version" size="40" /></label> examples: <code>==1.0</code> or <code>&lt;=1.1&gt;=1.0.3</code>
+                    <br />
+                    <small>While not technically mandatory, not providing this field is considered bad practice.</small>
                 </li>
 
             </ol>
         </div>
-        <h3>Resources (suggested)</h3>
+        <h3>Resources (Suggested)</h3>
         <div id="resources_fields">
             <ol>
                 <li>
-                    <label>Homepage<br /><input type="url" id="resources_homepage" size="40" /></label> The preferred landing page for the mod
+                    <label>Homepage<br /><input type="url" id="resources_homepage" size="40" /></label> URI to the preferred landing page for the mod
                 </li>
                 <li>
-                    <label>Repository<br /><input type="url" id="resources_repository" size="40" /></label> The repository where the mod's source can be found
-                </li>
-                <li>
-                    <label>Bugtracker<br /><input type="url" id="resources_bugtracker" size="40" /></label> The mod's bugtracker if it exists
-                </li>
+                    <label>Repository<br /><input type="url" id="resources_repository" size="40" /></label> URI to the repository where the mod's source can be found
+                </li>  
                 <li>
                     <label>CI<br /><input type="url" id="resources_ci" size="40" /></label> Continuous Integration (e.g. Jenkins) Server where the module is being built
                 </li>
                 <li>
-                    <label>SpaceDock<br /><input type="url" id="resources_spacedock" size="40" /></label> The mod's SpaceDock page
+                    <label>SpaceDock<br /><input type="url" id="resources_spacedock" size="40" /></label> URI to the mod's SpaceDock page
                 </li>
                 <li>
-                    <label>Manual<br /><input type="url" id="resources_manual" size="40" /></label> The mod's user manual if it exists
+                    <label>Manual<br /><input type="url" id="resources_manual" size="40" /></label> URI to the mod's user manual if it exists
                 </li>
                 <li>
-                    <label>License<br /><input type="url" id="resources_license" size="40" /></label> A URL to the mod's license
+                    <label>License<br /><input type="url" id="resources_license" size="40" /></label> URI to the mod's license
+                </li>
+                <li>
+                    <label>Bugtracker<br /><input type="url" id="resources_bugtracker" size="40" /></label> URI to the mod's bugtracker if it exists (Preferred page to post problems/questions)
                 </li>
                 <li>
                     <label>Screenshot<br /><input type="url" id="resources_x_screenshot" size="40" /></label> A direct URL to a screenshot of the mod
                 </li>
             </ol>
         </div>
-        <h3>Install instructions</h3>
+        <h3>Installation</h3>
         <div id="install_fields">
-            <ol> If this mod requires other mods to be installed alongside it, use Relationships.<b>Do not use install instructions to install multiple mods.</b>
+            <p>
+                If this mod requires other mods to be installed alongside it, use Relationships.
+                <strong>Do not use install instructions to install multiple mods.</strong>
+            </p>
+            <ol>
                 <li>
                     <label>Install from<br /><input type="text" id="file" size="40" /></label>
                 </li>
@@ -247,7 +253,7 @@
                     </div>
                 </li>
                 <li>
-                    <label>Supports (mod has specific code to relating to these mods)<br /><textarea id="supports" cols="40"></textarea></label>
+                    <label>Supports (mod has specific code to relating to these mods or is known to play well with them)<br /><textarea id="supports" cols="40"></textarea></label>
                     <button type="button" id="add_supports_button">Add</button>
                     <div id="add_supports" title="Add supported">
                         <div class="ui-widget">
@@ -260,7 +266,7 @@
                 </li>
 
                 <li>
-                    <label>Conflicts with (mod will be break or be broken by these mods)<br /><textarea id="conflicts" cols="40"></textarea></label>
+                    <label>Conflicts with (mod will break or will break these mods)<br /><textarea id="conflicts" cols="40"></textarea></label>
                     <button type="button" id="add_conflicts_button">Add</button>
                     <div id="add_conflicts" title="Add conflicted">
                         <div class="ui-widget">
@@ -277,7 +283,7 @@
         <div id="advanced_fields">
             <ol>
                 <li>
-                    <label>Provides - advanced field that lets mods be interchangeable<br /><textarea id="provides" cols="40"></textarea></label>
+                    <label>Provides (can be installed instead of these mods without problems)<br /><textarea id="provides" cols="40"></textarea></label>
                     <button type="button" id="add_provides_button">Add</button>
                     <div id="add_provides" title="Add provided">
                         <div class="ui-widget">
@@ -289,8 +295,9 @@
                     </div>
                 </li>
                 <li>
-                    <label><input type="checkbox" id="add_ksp_version_strict" value="1" size="40" /> Install only on exact KSP-Version match - advanced field in cases where mods are not compatible with small KSP patches/hotfixes</label>
+                    <label><input type="checkbox" id="add_ksp_version_strict" value="1" size="40" /> Install only on exact KSP-Version match</label> in case this mods is not compatible with small KSP patches/hotfixes
                 </li>
+
             </ol>
         </div>
         <h3>Don't Touch</h3>
@@ -300,7 +307,7 @@
                     <label>$kref<br /><input type="text" id="kref" size="40" /></label>
                 </li>
                 <li>
-                    <label>Update JSON<br /><textarea id="update_json" size="40">{}</textarea></label>
+                    <label>Update JSON<br /><textarea id="update_json" cols="40">{}</textarea></label>
                 </li>
             </ol>
         </div>
