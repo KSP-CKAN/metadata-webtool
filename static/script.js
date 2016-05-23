@@ -204,6 +204,10 @@ function setrel(obj, name, as_name) {
     }
 }
 
+function normalize_path(archive_path) {
+    return archive_path.trim().replace("\\", "/");
+}
+
 function generate_netkan() {
     var o = {
         "spec_version": "v1.18" //until detection of needed version works
@@ -235,7 +239,8 @@ function generate_netkan() {
 
     var install = []
     $("#install li").each(function () {
-        var d = { "file": $('[name="file"]', this).val(), "install_to": $('[name="install_to"]', this).val() }
+        var file = $('[name="file"]', this).val();
+        var d = { "file": normalize_path(file), "install_to": $('[name="install_to"]', this).val() }
         install.push(d);
     });
     o["install"] = install;
@@ -405,8 +410,13 @@ $(function () {
     add_ref("supports");
 
     install_template = $("#install li").detach();
+
     $("#install_add").on("click", function () {
         var install = install_template.clone();
+        $('[name="file"]', install).on("change", function () {
+            var t = $('[name="file"]', install);
+            t.val(normalize_path(t.val()));
+        });
         $('[name="remove"]', install).on("click", function () {
             install.remove();
         });
