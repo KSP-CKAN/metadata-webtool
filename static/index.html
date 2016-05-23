@@ -127,7 +127,7 @@
                     <label>Mod Version<br /><input type="text" id="version" size="40" /></label>
                 </li>
                 <li>
-                    <label>Abstract - A short description of what the mod does<br /><textarea id="abstract" placeholder="Awesome mod makes everything better!" cols="40" ></textarea></label>
+                    <label>Abstract - A short description of what the mod does<br /><textarea id="abstract" placeholder="Awesome mod makes everything better!" cols="40"></textarea></label>
                 </li>
                 <li>
                     <label>Download URI<br /><input type="url" id="download" size="40" /></label>
@@ -161,7 +161,7 @@
                 </li>
                 <li>
                     <label>Repository<br /><input type="url" id="resources_repository" size="40" /></label> URI to the repository where the mod's source can be found
-                </li>  
+                </li>
                 <li>
                     <label>CI<br /><input type="url" id="resources_ci" size="40" /></label> Continuous Integration (e.g. Jenkins) Server where the module is being built
                 </li>
@@ -188,14 +188,11 @@
                 If this mod requires other mods to be installed alongside it, use Relationships.
                 <strong>Do not use install instructions to install multiple mods.</strong>
             </p>
-            <ol>
+            <ol id="install">
                 <li>
-                    <label>Install from<br /><input type="text" id="file" size="40" /></label>
-                </li>
-                <li>
+                    Install <label>path <input type="text" name="file" size="40" /></label>
                     <label>
-                        Install to
-                        <select id="install_to">
+                        into <select name="install_to">
                             <option selected="selected">GameData</option>
                             <option>Ships</option>
                             <option>Ships/SPH</option>
@@ -207,8 +204,10 @@
                             <option>GameRoot</option>
                         </select>
                     </label>
+                    <button type="button" name="remove">Remove</button>
                 </li>
             </ol>
+            <button type="button" id="install_add">Add directive</button>
         </div>
         <h3>Relationships</h3>
         <div id="references_fields">
