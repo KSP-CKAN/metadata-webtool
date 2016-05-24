@@ -8,6 +8,7 @@
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/jquery-ui/jquery-ui.js"></script>
     <script src="bower_components/tv4/tv4.js"></script>
+    <script src="bower_components/jszip/dist/jszip.js"></script>
     <script src="hardcoded.js"></script>
     <style>
         .ui-autocomplete {
@@ -188,9 +189,16 @@
                 If this mod requires other mods to be installed alongside it, use Relationships.
                 <strong>Do not use install instructions to install multiple mods.</strong>
             </p>
+            <p>
+                You can upload the archive for path-completition<br />
+                <input type="file" id="archive_upload" /><br />
+                (no data is going to the net)
+                <datalist id="archive_paths"></datalist>
+            </p>
             <ol id="install">
                 <li>
-                    Install <label>path <input type="text" name="file" size="40" /></label>
+                    Install <label>path<br /><input type="search" name="file" size="40" list="archive_paths" /></label>
+
                     <label>
                         into <select name="install_to">
                             <option selected="selected">GameData</option>

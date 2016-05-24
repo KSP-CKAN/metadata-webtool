@@ -413,14 +413,31 @@ $(function () {
 
     $("#install_add").on("click", function () {
         var install = install_template.clone();
-        $('[name="file"]', install).on("change", function () {
+        $("#install").append(install);
+        function norm() {
             var t = $('[name="file"]', install);
             t.val(normalize_path(t.val()));
-        });
+        }
+        $('[name="file"]', install).on("change", norm);
+
         $('[name="remove"]', install).on("click", function () {
             install.remove();
         });
-        $("#install").append(install);
+
+    });
+    $("#archive_upload").on("change", function (event) {
+        function handleFile(f) {
+            JSZip.loadAsync(f).then(function (zip) {
+                var ap = $("#archive_paths").empty();
+                zip.forEach(function (relativePath, file) {
+                    ap.append($("<option/>").val(relativePath));
+                })
+            });
+        }
+        var files = event.target.files;
+        for (var i = 0, f; f = files[i]; i++) {
+            handleFile(f);
+        }
     });
 
 });
