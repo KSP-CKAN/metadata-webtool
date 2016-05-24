@@ -6,6 +6,8 @@
 
 var mode;
 
+var install_template;
+
 function get_val(id) {
     return $("#" + id).val().trim();
 }
@@ -202,6 +204,10 @@ function setrel(obj, name, as_name) {
     }
 }
 
+function normalize_path(archive_path) {
+    return archive_path.trim().replace("\\", "/");
+}
+
 function generate_netkan() {
     var o = {
         "spec_version": "v1.18" //until detection of needed version works
@@ -231,12 +237,14 @@ function generate_netkan() {
         o["resources"] = resources;
     }
 
-    var install = {}
-    sets(install, "file");
-    sets(install, "install_to");
-    if (install.length) {
-        o["install"] = [install];
-    }
+    var install = []
+    $("#install li").each(function () {
+        var file = $('[name="file"]', this).val();
+        var d = { "file": normalize_path(file), "install_to": $('[name="install_to"]', this).val() }
+        install.push(d);
+    });
+    o["install"] = install;
+
     var ksp_ver_raw = get_val("ksp_version");
     var ksp_ver = parse_ref_line("ksp" + ksp_ver_raw);
     if (ksp_ver.name == "ksp") {
@@ -400,4 +408,19 @@ $(function () {
     add_ref("conflicts");
     add_ref("recommends");
     add_ref("supports");
+
+    install_template = $("#install li").detach();
+
+    $("#install_add").on("click", function () {
+        var install = install_template.clone();
+        $('[name="file"]', install).on("change", function () {
+            var t = $('[name="file"]', install);
+            t.val(normalize_path(t.val()));
+        });
+        $('[name="remove"]', install).on("click", function () {
+            install.remove();
+        });
+        $("#install").append(install);
+    });
+
 });
