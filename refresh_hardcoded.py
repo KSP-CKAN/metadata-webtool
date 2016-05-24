@@ -4,7 +4,7 @@
 # All rights reserved.
 
 import json
-import ckan_interface
+import interfaces.ckan
 import datetime
 
 mandatory_fields = [
@@ -72,13 +72,13 @@ ckan_names.sort();
 
 
 def main():
-    ckan = ckan_interface.ckan_full()
+    ckan = interfaces.ckan.full()
     ckan_ids = sorted(set(e["identifier"] for e in ckan))
     ckan_names_ids = sorted(
         set((e["name"].strip(), e["identifier"]) for e in ckan))
-    license_ids = ckan_interface.ckan_allowed_license_ids()
+    license_ids = interfaces.ckan.allowed_license_ids()
     license_ids.sort()
-    ckan_schema = ckan_interface.ckan_json_schema()
+    ckan_schema = interfaces.ckan.json_schema()
     now = datetime.datetime.utcnow()
     with open("static/hardcoded.js", "w", encoding="utf-8") as f:
         f.write("// auto-generated on " + now.strftime("%Y-%m-%dT%H:%M:%S") +

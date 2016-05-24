@@ -1,14 +1,7 @@
 # Copyright (c) 2016, Jan Brohl <janbrohl@t-online.de>
 # All rights reserved.
 
-from urllib.request import urlopen
-import json
-
-
-def get_json(url):
-    with urlopen(url) as f:
-        s = f.read().decode("utf-8")
-    return json.loads(s)
+from interfaces._util import get_json
 
 
 def ksp_versions():
