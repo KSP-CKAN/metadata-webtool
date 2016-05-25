@@ -428,10 +428,22 @@ $(function () {
     $("#archive_upload").on("change", function (event) {
         function handleFile(f) {
             JSZip.loadAsync(f).then(function (zip) {
+                var ps = {};
                 var ap = $("#archive_paths").empty();
                 zip.forEach(function (relativePath, file) {
-                    ap.append($("<option/>").val(relativePath));
-                })
+                    var parts = relativePath.split("/");
+                    var p = parts[0];
+                    ps[p] = true;
+                    for (var i = 1; i < parts.length; i++) {
+                        p = p + "/" + parts[i];
+                        ps[p] = true;
+                    }
+                });
+                var psk = Object.keys(ps);
+                psk.sort();
+                for (var i = 0; i < psk.length; i++) {
+                    ap.append($("<option/>").val(psk[i]));
+                }
             });
         }
         var files = event.target.files;
