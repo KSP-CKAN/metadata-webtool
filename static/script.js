@@ -397,12 +397,6 @@ $(function () {
     $("#add_license_id").autocomplete({
         "source": license_ids
     });
-    $("#add_license_name").autocomplete({
-        "source": license_names
-    });
-    $("#add_license_name").on("autocompleteclose", function () {
-        $("#add_license_id").val(license_name_to_id[get_val("add_license_name")]);
-    });
     $("#add_license_button").on("click", function () {
         al.dialog("open");
         $("#add_license input").val("");
