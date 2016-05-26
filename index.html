@@ -1,0 +1,332 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>ckan-metadata-generator</title>
+    <link rel="stylesheet" href="bower_components/jquery-ui/themes/base/jquery-ui.css">
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/jquery-ui/jquery-ui.js"></script>
+    <script src="bower_components/tv4/tv4.js"></script>
+    <script src="hardcoded.js"></script>
+    <style>
+        .ui-autocomplete {
+            max-height: 100px;
+            overflow-y: auto;
+            /* prevent horizontal scrollbar */
+            overflow-x: hidden;
+        }
+
+        code {
+            background-color: lightgray;
+        }
+
+        .filled-by-netkan {
+            background-color: lightgreen;
+        }
+    </style>
+    <script src="script.js"></script>
+</head>
+<body>
+    <div id="mode_tabs">
+        <ul>
+            <li><a href="#tab_spacedock">SpaceDock</a></li>
+            <li><a href="#tab_github">GitHub</a></li>
+            <li><a href="#tab_http">HTTP(S)</a></li>
+            <li><a href="#tab_kref">Raw $kref</a></li>
+            <li><a href="#tab_edit">Edit existing</a></li>
+            <li><a href="#tab_other">Other</a></li>
+        </ul>
+        <div id="tab_spacedock">
+            <ol>
+                <li>
+                    <label>SpaceDock ID<br /><input type="number" id="spacedock_id" required="required" /></label>
+                </li>
+                <li>
+                    <button type="button" onclick="proceed_spacedock()">Proceed</button>
+                </li>
+            </ol>
+
+        </div>
+        <div id="tab_github">
+            <ol>
+                <li>
+                    <label>User name<br /><input type="text" id="github_user" required="required" size="40" /></label>
+                </li>
+                <li>
+                    <label>Repository name<br /><input type="text" id="github_repo" required="required" size="40" /></label>
+                </li>
+                <li>
+                    <label>Asset Match<br /><input type="text" id="github_asset_match" required="required" size="40" /></label>
+                </li>
+                <li>
+                    <label>Filter Regular Expression<br /><input type="text" id="github_filter_regexp" required="required" size="40" /></label> Case-sensitive C#
+                </li>
+                <li>
+                    <button type="button" onclick="proceed_github()">Proceed</button>
+                </li>
+            </ol>
+        </div>
+        <div id="tab_http">
+            <ol>
+                <li>
+                    <label>URI<br /><input type="url" id="http_url" required="required" size="40" /></label>
+                </li>
+                <li>
+                    <button type="button" onclick="proceed_http()">Proceed</button>
+                </li>
+            </ol>
+        </div>
+        <div id="tab_kref">
+            <p>Must start with any of: <code>#/ckan/spacedock/</code> , <code>#/ckan/github/</code> , <code>#/ckan/http/</code></p>
+            <ol>
+                <li>
+                    <label>$kref<br /><input type="text" id="kref_kref" size="40" /></label>
+                </li>
+                <li>
+                    <button type="button" onclick="proceed_kref()">Proceed</button>
+                </li>
+            </ol>
+        </div>
+        <div id="tab_edit">
+            <p>Loading files from the index repository might be implemented later</p>
+            <ol>
+                <li>
+                    <label>NetKAN File Contents<br /><textarea id="edit_json" cols="40"></textarea></label>
+                </li>
+                <li>
+                    <button type="button" onclick="proceed_edit()">Proceed</button>
+                </li>
+            </ol>
+        </div>
+        <div id="tab_other">
+            <ol>
+                <li>
+                    <button type="button" onclick="proceed_other()">Proceed</button>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <p>
+        Fields filled by the NetKAN indexer look like <input type="text" class="filled-by-netkan" disabled="disabled" /> - you can override auto-detection by setting a value yourself. <strong>If unsure - don't override.</strong>
+    </p>
+    <div id="accordion">
+        <h3>Mandatory</h3>
+        <div>
+            <ol id="mandatory_fields">
+                <li>
+                    <label>Identifier - Machine-friendly name for the mod (only numbers, letters, and dashes, no spaces)<br /><input type="text" id="identifier" placeholder="AwesomeMod" size="40" pattern="^[A-Za-z][A-Za-z0-9-]*$" /></label> <strong id="identifier_info"></strong>
+                </li>
+                <li>
+                    <label>Name - User-friendly name for the mod<br /><input type="text" id="name" placeholder="Awesome Mod" size="40" /></label> <strong id="name_info"></strong>
+                </li>
+                <li>
+                    <label><input type="checkbox" id="add_vref" value="1" onchange="switch_add_vref()" /> Installs <code>.version</code> file</label>
+                </li>
+                <li>
+                    <label>Mod Version<br /><input type="text" id="version" size="40" /></label>
+                </li>
+                <li>
+                    <label>Abstract - A short description of what the mod does<br /><textarea id="abstract" placeholder="Awesome mod makes everything better!" cols="40"></textarea></label>
+                </li>
+                <li>
+                    <label>Download URI<br /><input type="url" id="download" size="40" /></label>
+                </li>
+                <li>
+                    <label>Mod Authors (one per line)<br /><textarea id="author" cols="40"></textarea></label>
+                </li>
+                <li>
+                    <label>License(s)<br /><textarea id="license" cols="40"></textarea></label>
+                    <button type="button" id="add_license_button">Add</button> Users can choose to which of these to adhere
+                    <div id="add_license" title="Add license">
+                        <a href="https://github.com/KSP-CKAN/CKAN/blob/master/Spec.md#license" target="_blank">About valid licenses</a>
+                        <div class="ui-widget">
+                            <label>Search by name<br /><input type="text" id="add_license_name" size="40"></label>
+                        </div>
+                        <div class="ui-widget">
+                            <label>License ID<br /><input type="text" id="add_license_id" size="40"></label>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <label>KSP-Version<br /><input type="text" id="ksp_version" size="40" /></label> examples: <code>==1.0</code> or <code>&lt;=1.1&gt;=1.0.3</code>
+                    <br />
+                    <small>While not technically mandatory, not providing this field is considered bad practice.</small>
+                </li>
+
+            </ol>
+        </div>
+        <h3>Resources (Suggested)</h3>
+        <div id="resources_fields">
+            <ol>
+                <li>
+                    <label>Homepage<br /><input type="url" id="resources_homepage" size="40" /></label> URI to the preferred landing page for the mod
+                </li>
+                <li>
+                    <label>Repository<br /><input type="url" id="resources_repository" size="40" /></label> URI to the repository where the mod's source can be found
+                </li>
+                <li>
+                    <label>CI<br /><input type="url" id="resources_ci" size="40" /></label> Continuous Integration (e.g. Jenkins) Server where the module is being built
+                </li>
+                <li>
+                    <label>SpaceDock<br /><input type="url" id="resources_spacedock" size="40" /></label> URI to the mod's SpaceDock page
+                </li>
+                <li>
+                    <label>Manual<br /><input type="url" id="resources_manual" size="40" /></label> URI to the mod's user manual if it exists
+                </li>
+                <li>
+                    <label>License<br /><input type="url" id="resources_license" size="40" /></label> URI to the mod's license
+                </li>
+                <li>
+                    <label>Bugtracker<br /><input type="url" id="resources_bugtracker" size="40" /></label> URI to the mod's bugtracker if it exists (Preferred page to post problems/questions)
+                </li>
+                <li>
+                    <label>Screenshot<br /><input type="url" id="resources_x_screenshot" size="40" /></label> A direct URL to a screenshot of the mod
+                </li>
+            </ol>
+        </div>
+        <h3>Installation</h3>
+        <div id="install_fields">
+            <p>
+                If this mod requires other mods to be installed alongside it, use Relationships.
+                <strong>Do not use install instructions to install multiple mods.</strong>
+            </p>
+            <ol id="install">
+                <li>
+                    Install <label>path <input type="text" name="file" size="40" /></label>
+                    <label>
+                        into <select name="install_to">
+                            <option selected="selected">GameData</option>
+                            <option>Ships</option>
+                            <option>Ships/SPH</option>
+                            <option>Ships/VAB</option>
+                            <option>Ships/@thumbs/VAB</option>
+                            <option>Ships/@thumbs/SPH</option>
+                            <option>Tutorial</option>
+                            <option>Scenarios</option>
+                            <option>GameRoot</option>
+                        </select>
+                    </label>
+                    <button type="button" name="remove">Remove</button>
+                </li>
+            </ol>
+            <button type="button" id="install_add">Add directive</button>
+        </div>
+        <h3>Relationships</h3>
+        <div id="references_fields">
+            <p>
+                You can add version restrictions. For example <code>SomeModID</code> can be restricted like <code>SomeModID ==1.0</code> or <code>SomeModID &lt;=1.1 &gt;=1.0.3</code>
+            </p>
+            <ol>
+                <li>
+                    <label>Depends on (mod will not run without it)<br /><textarea id="depends" cols="40"></textarea></label>
+                    <button type="button" id="add_depends_button">Add</button>
+                    <div id="add_depends" title="Add requirement">
+                        <div class="ui-widget">
+                            <label>Search by name<br /><input type="text" id="add_depends_name" size="40"></label>
+                        </div>
+                        <div class="ui-widget">
+                            <label>Requirement ID<br /><input type="text" id="add_depends_id" size="40"></label>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <label>Recommends (mod is greatly complimented by these mods)<br /><textarea id="recommends" cols="40"></textarea></label>
+                    <button type="button" id="add_recommends_button">Add</button>
+                    <div id="add_recommends" title="Add recommendation">
+                        <div class="ui-widget">
+                            <label>Search by name<br /><input type="text" id="add_recommends_name" size="40"></label>
+                        </div>
+                        <div class="ui-widget">
+                            <label>Recommendation ID<br /><input type="text" id="add_recommends_id" size="40"></label>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <label>Suggests (mod is complimented by these mods)<br /><textarea id="suggests" cols="40"></textarea></label>
+                    <button type="button" id="add_suggests_button">Add</button>
+                    <div id="add_suggests" title="Add suggestion">
+                        <div class="ui-widget">
+                            <label>Search by name<br /><input type="text" id="add_suggests_name" size="40"></label>
+                        </div>
+                        <div class="ui-widget">
+                            <label>Suggestion ID<br /><input type="text" id="add_suggests_id" size="40"></label>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <label>Supports (mod has specific code to relating to these mods ex. Toolbar integration)<br /><textarea id="supports" cols="40"></textarea></label>
+                    <button type="button" id="add_supports_button">Add</button>
+                    <div id="add_supports" title="Add supported">
+                        <div class="ui-widget">
+                            <label>Search by name<br /><input type="text" id="add_supports_name" size="40"></label>
+                        </div>
+                        <div class="ui-widget">
+                            <label>Supported ID<br /><input type="text" id="add_supports_id" size="40"></label>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <label>Conflicts with (mod will break or be broken by these mods)<br /><textarea id="conflicts" cols="40"></textarea></label>
+                    <button type="button" id="add_conflicts_button">Add</button>
+                    <div id="add_conflicts" title="Add conflicted">
+                        <div class="ui-widget">
+                            <label>Search by name<br /><input type="text" id="add_conflicts_name" size="40"></label>
+                        </div>
+                        <div class="ui-widget">
+                            <label>Conflicted ID<br /><input type="text" id="add_conflicts_id" size="40"></label>
+                        </div>
+                    </div>
+                </li>
+            </ol>
+        </div>
+        <h3>Advanced</h3>
+        <div id="advanced_fields">
+            <ol>
+                <li>
+                    <label>Provides (can be installed instead of these mods without problems)<br /><textarea id="provides" cols="40"></textarea></label>
+                    <button type="button" id="add_provides_button">Add</button>
+                    <div id="add_provides" title="Add provided">
+                        <div class="ui-widget">
+                            <label>Search by name<br /><input type="text" id="add_provides_name" size="40"></label>
+                        </div>
+                        <div class="ui-widget">
+                            <label>Provided ID<br /><input type="text" id="add_provides_id" size="40"></label>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <label><input type="checkbox" id="add_ksp_version_strict" value="1" size="40" /> Install only on exact KSP-Version match</label> in case this mods is not compatible with small KSP patches/hotfixes
+                </li>
+
+            </ol>
+        </div>
+        <h3>Don't Touch</h3>
+        <div id="dont_touch_fields">
+            <ol>
+                <li>
+                    <label>$kref<br /><input type="text" id="kref" size="40" /></label>
+                </li>
+                <li>
+                    <label>Update JSON<br /><textarea id="update_json" cols="40">{}</textarea></label>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <br />
+    <div>
+        <button id="generate_netkan" type="button">Generate netkan</button>
+    </div>
+    <br />
+    <div>
+        <label>Output<br /><textarea id="json_output" cols="40"></textarea></label>
+    </div>
+    <br />
+    <small>
+        Copyright (c) 2016, Jan Brohl
+        <br />
+        All rights reserved.
+    </small>
+</body>
+</html>
