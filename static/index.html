@@ -190,15 +190,14 @@
                 <strong>Do not use install instructions to install multiple mods.</strong>
             </p>
             <p>
-                You can upload the archive for path-completition<br />
+                Selecting the .zip file on your computer will enable automatic path completion.<br />
+                No data will be uploaded anywhere.<br />
                 <input type="file" id="archive_upload" /><br />
-                (no data is going to the net)
                 <datalist id="archive_paths"></datalist>
             </p>
             <ol id="install">
                 <li>
-                    Install <label>path<br /><input type="search" name="file" size="40" list="archive_paths" /></label>
-
+                    Install <label>file/folder<br /><input type="search" name="file" size="40" list="archive_paths" /></label>
                     <label>
                         into <select name="install_to">
                             <option selected="selected">GameData</option>
@@ -212,6 +211,7 @@
                             <option>GameRoot</option>
                         </select>
                     </label>
+                    <label>as <input name="install_as" type="text" placeholder="leave empty for same name" size="40" /></label>
                     <button type="button" name="remove">Remove</button>
                 </li>
             </ol>

@@ -240,7 +240,11 @@ function generate_netkan() {
     var install = []
     $("#install li").each(function () {
         var file = $('[name="file"]', this).val();
+        var install_as = $('[name="install_as"]', this).val();
         var d = { "file": normalize_path(file), "install_to": $('[name="install_to"]', this).val() }
+        if (install_as && install_as.length) {
+            d["as"] = install_as;
+        }
         install.push(d);
     });
     o["install"] = install;
@@ -428,21 +432,14 @@ $(function () {
     $("#archive_upload").on("change", function (event) {
         function handleFile(f) {
             JSZip.loadAsync(f).then(function (zip) {
-                var ps = {};
+                var pa = [];
                 var ap = $("#archive_paths").empty();
                 zip.forEach(function (relativePath, file) {
-                    var parts = relativePath.split("/");
-                    var p = parts[0];
-                    ps[p] = true;
-                    for (var i = 1; i < parts.length; i++) {
-                        p = p + "/" + parts[i];
-                        ps[p] = true;
-                    }
+                    pa.push([relativePath]);
                 });
-                var psk = Object.keys(ps);
-                psk.sort();
-                for (var i = 0; i < psk.length; i++) {
-                    ap.append($("<option/>").val(psk[i]));
+                pa.sort();
+                for (var i = 0; i < pa.length; i++) {
+                    ap.append($("<option/>").val(pa[i]));
                 }
             });
         }
