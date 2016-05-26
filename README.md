@@ -1,11 +1,9 @@
-# CKAN-Metadata-Generator
+# Metadata-Webtool
 
 
 ##Current Status
 
-Not actually bug-free to be positive. ;)
-
-Neither actually well documented.
+You can try it and the generated data *should* be good for submitting but the user interface is not great yet.
 
 
 ##Original Mission
@@ -18,6 +16,7 @@ Spacedock, github, and all other hosts (curse will be a kref-able source in the 
 
 ##How to make it work
 
-Currently the Python stuff (*.py) is not yet needed for trying it out.
 
-"Just" install jquery, jqueri-ui, tv4 via bower (bower.json and .bowerrc already configured) and then open static/index.html
+"Just" install jquery, jqueri-ui, tv4, jszip via bower (bower.json and .bowerrc already configured) and then open static/index.html
+
+Currently the Python stuff (*.py) is not yet needed for trying it out but for updating data only - just run refresh_hardcoded.py if you want to do that.
