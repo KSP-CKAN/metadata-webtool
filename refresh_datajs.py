@@ -169,9 +169,9 @@ def main():
         set((e["name"].strip(), e["identifier"]) for e in ckan))
     ckan_schema = interfaces.ckan.json_schema()
     now = datetime.datetime.utcnow()
-    with open("static/hardcoded.js", "w", encoding="utf-8") as f:
-        f.write("// auto-generated on " + now.strftime("%Y-%m-%dT%H:%M:%S") +
-                " UTC - see refresh_hardcoded.py\n\"use strict\";\n\n")
+    now_str = now.strftime("%Y-%m-%dT%H:%M:%S")
+    with open("static/data.js", "w", encoding="utf-8") as f:
+        f.write("// auto-generated on %s UTC - see refresh_datajs.py\n\"use strict\";\n\nvar data_updated = \"%s\";\n\n" % (now_str, now_str))
 
         f.write("var mandatory_fields = ")
         json.dump(mandatory_fields, f, sort_keys=True)

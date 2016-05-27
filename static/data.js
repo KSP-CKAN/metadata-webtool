@@ -1,5 +1,7 @@
-// auto-generated on 2016-05-26T09:43:44 UTC - see refresh_hardcoded.py
+// auto-generated on 2016-05-27T12:09:50 UTC - see refresh_datajs.py
 "use strict";
+
+var data_updated = "2016-05-27T12:09:50";
 
 var mandatory_fields = ["abstract", "download", "identifier", "license", "name", "spec_version", "version"];
 
