@@ -210,7 +210,7 @@ function normalize_path(archive_path) {
 
 function generate_netkan() {
     var o = {
-        "spec_version": "v1.18" //until detection of needed version works
+        "spec_version": "v1.16" //until detection of needed version works
     };
 
     sets(o, "name");
@@ -240,11 +240,13 @@ function generate_netkan() {
     var install = []
     $("#install li").each(function () {
         var file = $('[name="file"]', this).val();
+        var d = { "file": normalize_path(file), "install_to": $('[name="install_to"]', this).val() };
+        /* Deactivate until release of Spec v1.18
         var install_as = $('[name="install_as"]', this).val();
-        var d = { "file": normalize_path(file), "install_to": $('[name="install_to"]', this).val() }
         if (install_as && install_as.length) {
             d["as"] = install_as;
         }
+        */
         install.push(d);
     });
     o["install"] = install;
