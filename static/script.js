@@ -209,10 +209,7 @@ function normalize_path(archive_path) {
 }
 
 function generate_netkan() {
-    var o = {
-        "spec_version": "v1.18" //until detection of needed version works
-    };
-
+    sets(o, "spec_version");
     sets(o, "name");
     sets(o, "identifier");
     sets(o, "abstract");
