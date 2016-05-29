@@ -39,13 +39,9 @@ function proceed_spacedock() {
 function proceed_github() {
     update_mode("github");
     var k = "#/ckan/github/" + get_val("github_user") + "/" + get_val("github_repo");
-    var am = get_val("github_asset_match");
     var fr = get_val("github_filter_regexp");
-    if (am && am.length) {
-        k = k + "/" + am;
-        if (fr && fr.length) {
-            k = k + "/" + fr;
-        }
+    if (fr && fr.length) {
+        k = k + "/asset_match/" + fr;
     }
     $("#kref").val(k);
 }
