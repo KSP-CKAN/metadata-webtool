@@ -111,8 +111,9 @@
         Fields filled by the NetKAN indexer look like <input type="text" class="filled-by-netkan" disabled="disabled" /> - you can override auto-detection by setting a value yourself. <strong>If unsure - don't override.</strong>
     </p>
     <div id="accordion">
-        <h3>Mandatory</h3>
+        <h3>Basic</h3>
         <div>
+            <h4>Mandatory</h4>
             <ol id="mandatory_fields">
                 <li>
                     <label>Identifier - Machine-friendly name for the mod (only numbers, letters, and dashes, no spaces)<br /><input type="text" id="identifier" placeholder="AwesomeMod" size="40" pattern="^[A-Za-z][A-Za-z0-9-]*$" /></label> <strong id="identifier_info"></strong>
@@ -150,7 +151,17 @@
                     <br />
                     <small>While not technically mandatory, not providing this field is considered bad practice.</small>
                 </li>
-
+            </ol>
+            <h4>Nice to have</h4>
+            <ol id="nice_to_have">
+                <li>
+                    <label>Index Maintainers (one per line)<br /><textarea id="x_maintained_by" cols="40"></textarea></label>
+                    <br />
+                    <small>
+                        Please put the people here who take care of the entry you are making at the moment if not the same as the authors:
+                        Propably <strong>you</strong> and maybe others
+                    </small>
+                </li>
             </ol>
         </div>
         <h3>Resources (Suggested)</h3>
