@@ -64,7 +64,6 @@ function proceed_kref() {
         var ghs = k.substring(gh.length).split("/", 4);
         $("#github_user").val(ghs[0]);
         $("#github_repo").val(ghs[1]);
-        $("#github_asset_match").val(ghs[2]);
         $("#github_filter_regexp").val(ghs[3]);
         return proceed_spacedock();
 
