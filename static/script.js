@@ -4,9 +4,18 @@
 */
 "use strict";
 
+var spec_versions = [1, "v1.0", "v1.1", "v1.2", "v1.3", "v1.4", "v1.5", "v1.6", "v1.7", "v1.8", "v1.9", "v1.10", "v1.11", "v1.12", "v1.13", "v1.14", "v1.15", "v1.16", "v1.17", "v1.18"];
+
 var mode;
 
 var install_template;
+
+function latest(a, b) {
+    if (spec_versions.indexOf(a) < spec_versions.indexOf(b)) {
+        return b;
+    }
+    return a;
+}
 
 function get_val(id) {
     return $("#" + id).val().trim();
@@ -209,14 +218,21 @@ function normalize_path(archive_path) {
 }
 
 function generate_netkan() {
-    var o = {
-        "spec_version": "v1.18" //until detection of needed version works
-    };
+    var req_version = 1;
+    var o = {};
 
     sets(o, "name");
     sets(o, "identifier");
     sets(o, "abstract");
     seta(o, "license");
+    if (o.license.includes("WTFPL")) {
+        req_version = latest(req_version, "v1.2");
+    }
+    if (o.license.length == 1) {
+        o.license = o.license[0];
+    } else {
+        req_version = latest(req_version, "v1.8");
+    }
     seta(o, "author");
     sets(o, "download");
     sets(o, "kref", "$kref");
@@ -228,6 +244,9 @@ function generate_netkan() {
     sets(resources, "resources_bugtracker", "bugtracker");
     sets(resources, "resources_license", "license");
     sets(resources, "resources_ci", "ci");
+    if (resources.ci) {
+        req_version = latest(req_version, "v1.6");
+    }
     sets(resources, "resources_spacedock", "spacedock");
     sets(resources, "resources_manual", "manual");
     sets(resources, "resources_homepage", "homepage");
@@ -239,8 +258,18 @@ function generate_netkan() {
 
     var install = []
     $("#install li").each(function () {
+        var v = 1;
         var file = $('[name="file"]', this).val();
-        var d = { "file": normalize_path(file), "install_to": $('[name="install_to"]', this).val() }
+        var to = $('[name="install_to"]', this).val();
+        if (to == "Ships/SPH" || to == "Ships/VAB") {
+            v = "v1.12";
+        } else if (to == "Scenarios") {
+            v = "v1.14";
+        } else if (to == "Ships/@thumbs/VAB" || to == "Ships/@thumbs/SPH") {
+            v = "v1.16";
+        }
+        req_version = latest(req_version, v);
+        var d = { "file": normalize_path(file), "install_to": to }
         install.push(d);
     });
     o["install"] = install;
@@ -262,6 +291,8 @@ function generate_netkan() {
     }
     if ($("#add_ksp_version_strict:checked").val()) {
         o["ksp_version_strict"] = true;
+    } else {
+        req_version = latest(req_version, "v1.16");
     }
 
 
@@ -269,6 +300,9 @@ function generate_netkan() {
     setrel(o, "recommends");
     setrel(o, "suggests");
     setrel(o, "supports");
+    if (o.supports && o.supports.length) {
+        req_version = latest(req_version, "v1.2");
+    }
     setrel(o, "conflicts");
     setrel(o, "provides");
 
@@ -284,6 +318,12 @@ function generate_netkan() {
             o[key] = ujo[key];
         }
     }
+
+
+
+
+
+    o["spec_version"] = req_version;
 
     var validation_result = tv4.validateMultiple(o, ckan_schema);
     if (!validation_result.valid) {
