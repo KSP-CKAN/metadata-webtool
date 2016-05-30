@@ -77,7 +77,7 @@ license_id_to_name = {
     "Perl": "Artistic License 1.0 (Perl)",
     "Python-2.0": "Python License 2.0",
     "QPL-1.0": "Q Public License 1.0",
-    "Unlicense": "The Unlicense",
+    # Waiting for v1.18    "Unlicense": "The Unlicense",
     "W3C": "W3C Software Notice and License (2002-12-31)",
     "WTFPL": "Do What The F*ck You Want To Public License",
     "Zlib": "zlib License",
