@@ -8,22 +8,8 @@
     <script>
         "use strict";
 
-        function escape_char_code(cc) {
-            var hexnum = as_hex(cc);
-            for (var i = hexnum.length; i < 4; i++) {
-                hexnum = "0" + hexnum;
-            }
-            return "\\u" + hexnum;
-        }
-
-        function as_hex(n) {
-            var hex = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"];
-            if (n < 16) {
-                return hex[n];
-            }
-            var i = Math.floor(n / 16);
-            return as_hex(i) + hex[n - (i * 16)];
-        }
+        var need_escaping = [".", "$", "^", "{", "[", "(", "|", ")", "*", "+", "?", "\\"];
+        //according to https://msdn.microsoft.com/en-us/library/4edbef7e%28v=vs.110%29.aspx
         function glob2regex(glob) {
             var out = "";
             for (var i = 0; i < glob.length; i++) {
@@ -37,8 +23,10 @@
                     }
                 } else if (c == "?") {
                     out = out + "[^/]";
+                } else if (need_escaping.includes(c)) {
+                    out = out + "\\" + c;
                 } else {
-                    out = out + escape_char_code(glob.charCodeAt(i));
+                    out = out + c;
                 }
             }
             return out;
