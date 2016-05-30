@@ -152,15 +152,6 @@
                     <br />
                     <small>While not technically mandatory, not providing this field is considered bad practice.</small>
                 </li>
-                <li>
-                    <label>
-                        Release Status <select id="release_status">
-                            <option selected="selected">stable</option>
-                            <option>testing</option>
-                            <option>development</option>
-                        </select>
-                    </label>
-                </li>
             </ol>
         </div>
         <h3>Resources (Suggested)</h3>
@@ -291,6 +282,15 @@
         <h3>Advanced</h3>
         <div id="advanced_fields">
             <ol>
+                <li>
+                    <label>
+                        Release Status <select id="release_status">
+                            <option selected="selected">stable</option>
+                            <option>testing</option>
+                            <option>development</option>
+                        </select>
+                    </label>
+                </li>
                 <li>
                     <label>Provides (can be installed instead of these mods without problems)<br /><textarea id="provides" cols="40"></textarea></label>
                     <button type="button" id="add_provides_button">Add</button>
