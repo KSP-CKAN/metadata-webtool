@@ -295,8 +295,9 @@ function generate_netkan() {
         alert(msg);
     }
 
-    $("#json_output").val(JSON.stringify(o, null, "\t"));
-
+    var data = JSON.stringify(o, null, "\t");
+    $("#json_output").val(data);
+    $("#issue_body").val("\n\n``` JSON\n" + data + "\n```\n");
 
 
 }
