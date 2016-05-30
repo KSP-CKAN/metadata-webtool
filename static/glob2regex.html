@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Glob to Regex</title>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script>
+        "use strict";
+
+        function escape_char_code(cc) {
+            var hexnum = as_hex(cc);
+            for (var i = hexnum.length; i < 4; i++) {
+                hexnum = "0" + hexnum;
+            }
+            return "\\u" + hexnum;
+        }
+
+        function as_hex(n) {
+            var hex = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"];
+            if (n < 16) {
+                return hex[n];
+            }
+            var i = Math.floor(n / 16);
+            return as_hex(i) + hex[n - (i * 16)];
+        }
+        function glob2regex(glob) {
+            var out = "";
+            for (var i = 0; i < glob.length; i++) {
+                var c = glob[i];
+                if (c == "*") {
+                    if (glob[i + 1] == "*") {
+                        out = out + ".*"
+                        i++;
+                    } else {
+                        out = out + "[^/]*";
+                    }
+                } else if (c == "?") {
+                    out = out + "[^/]";
+                } else {
+                    out = out + escape_char_code(glob.charCodeAt(i));
+                }
+            }
+            return out;
+        }
+    </script>
+</head>
+<body>
+    <label>Path with wildcards <input type="text" id="glob" /></label>
+    <br />
+    Supported wildcards: <code>?</code> (single character except "/"), <code>*</code> (any count of characters except "/"), <code>**</code> (any count of characters)
+    <br />
+    <button type="button" onclick="$('#regex').val(glob2regex($('#glob').val()));">Covert</button>
+    <br />
+    <label>As C# regular expression <input type="text" id="regex" /></label>
+</body>
+</html>
