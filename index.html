@@ -25,6 +25,11 @@
         .filled-by-netkan {
             background-color: lightgreen;
         }
+
+        #json_output {
+            border-style: solid;
+            border-width: thin;
+        }
     </style>
     <script src="script.js"></script>
 </head>
@@ -341,7 +346,7 @@
     </div>
     <br />
     <div>
-        <label>Raw Output<br /><textarea id="json_output" cols="40"></textarea></label>
+        <label>Raw Output<br /><pre id="json_output"></pre></label>
         <form action="https://github.com/KSP-CKAN/NetKAN/issues/new" method="get">
             <input type="hidden" name="body" id="issue_body" />
             <br />
