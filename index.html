@@ -3,12 +3,13 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
-    <title>ckan-metadata-generator</title>
+    <title>Metadata-Webtool</title>
     <link rel="stylesheet" href="bower_components/jquery-ui/themes/base/jquery-ui.css">
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/jquery-ui/jquery-ui.js"></script>
     <script src="bower_components/tv4/tv4.js"></script>
-    <script src="hardcoded.js"></script>
+    <script src="bower_components/jszip/dist/jszip.js"></script>
+    <script src="data.js"></script>
     <style>
         .ui-autocomplete {
             max-height: 100px;
@@ -57,10 +58,13 @@
                     <label>Repository name<br /><input type="text" id="github_repo" required="required" size="40" /></label>
                 </li>
                 <li>
-                    <label>Asset Match<br /><input type="text" id="github_asset_match" required="required" size="40" /></label>
-                </li>
-                <li>
-                    <label>Filter Regular Expression<br /><input type="text" id="github_filter_regexp" required="required" size="40" /></label> Case-sensitive C#
+                    <label>Fiter Regular Expression<br /><input type="text" id="github_filter_regexp" size="40" /></label> Case-sensitive C# semantics
+                    <br />
+                    <small>
+                        By default NetKAN will look for a zip file in the release.
+                        If there are multiple zip files it'll produce an error as it doesn't know which one to use.
+                        You can use this field to provide a regular expression to filter which file to use
+                    </small>
                 </li>
                 <li>
                     <button type="button" onclick="proceed_github()">Proceed</button>
@@ -191,9 +195,15 @@
                 If this mod requires other mods to be installed alongside it, use Relationships.
                 <strong>Do not use install instructions to install multiple mods.</strong>
             </p>
+            <p>
+                Selecting the .zip file on your computer will enable automatic path completion.<br />
+                No data will be uploaded anywhere.<br />
+                <input type="file" id="archive_upload" /><br />
+                <datalist id="archive_paths"></datalist>
+            </p>
             <ol id="install">
                 <li>
-                    Install <label>path <input type="text" name="file" size="40" /></label>
+                    Install <label>file/folder<br /><input type="search" name="file" size="40" list="archive_paths" /></label>
                     <label>
                         into <select name="install_to">
                             <option selected="selected">GameData</option>
@@ -207,6 +217,7 @@
                             <option>GameRoot</option>
                         </select>
                     </label>
+                    <!-- Deactivate until release of Spec v1.18 <label>as <input name="install_as" type="text" placeholder="leave empty for same name" size="40" /></label> -->
                     <button type="button" name="remove">Remove</button>
                 </li>
             </ol>
@@ -324,9 +335,7 @@
     </div>
     <br />
     <small>
-        Copyright (c) 2016, Jan Brohl
-        <br />
-        All rights reserved.
+        Copyright (c) 2016, See <a href="https://github.com/KSP-CKAN/metadata-webtool/blob/master/LICENSE.md">LICENSE</a>
     </small>
 </body>
 </html>
