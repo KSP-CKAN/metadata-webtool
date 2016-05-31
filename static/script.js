@@ -205,7 +205,7 @@ function normalize_path(archive_path) {
 
 function generate_netkan() {
     var o = {
-        "spec_version": "v1.18" //until detection of needed version works
+        "spec_version": "v1.16" //until detection of needed version works
     };
 
     sets(o, "name");
@@ -235,7 +235,13 @@ function generate_netkan() {
     var install = []
     $("#install li").each(function () {
         var file = $('[name="file"]', this).val();
-        var d = { "file": normalize_path(file), "install_to": $('[name="install_to"]', this).val() }
+        var d = { "file": normalize_path(file), "install_to": $('[name="install_to"]', this).val() };
+        /* Deactivate until release of Spec v1.18
+        var install_as = $('[name="install_as"]', this).val();
+        if (install_as && install_as.length) {
+            d["as"] = install_as;
+        }
+        */
         install.push(d);
     });
     o["install"] = install;
@@ -414,14 +420,36 @@ $(function () {
 
     $("#install_add").on("click", function () {
         var install = install_template.clone();
-        $('[name="file"]', install).on("change", function () {
+        $("#install").append(install);
+        function norm() {
             var t = $('[name="file"]', install);
             t.val(normalize_path(t.val()));
-        });
+        }
+        $('[name="file"]', install).on("change", norm);
+
         $('[name="remove"]', install).on("click", function () {
             install.remove();
         });
-        $("#install").append(install);
+
+    });
+    $("#archive_upload").on("change", function (event) {
+        function handleFile(f) {
+            JSZip.loadAsync(f).then(function (zip) {
+                var pa = [];
+                var ap = $("#archive_paths").empty();
+                zip.forEach(function (relativePath, file) {
+                    pa.push([relativePath]);
+                });
+                pa.sort();
+                for (var i = 0; i < pa.length; i++) {
+                    ap.append($("<option/>").val(pa[i]));
+                }
+            });
+        }
+        var files = event.target.files;
+        for (var i = 0, f; f = files[i]; i++) {
+            handleFile(f);
+        }
     });
 
 });

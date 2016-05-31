@@ -8,6 +8,7 @@
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/jquery-ui/jquery-ui.js"></script>
     <script src="bower_components/tv4/tv4.js"></script>
+    <script src="bower_components/jszip/dist/jszip.js"></script>
     <script src="data.js"></script>
     <style>
         .ui-autocomplete {
@@ -194,9 +195,15 @@
                 If this mod requires other mods to be installed alongside it, use Relationships.
                 <strong>Do not use install instructions to install multiple mods.</strong>
             </p>
+            <p>
+                Selecting the .zip file on your computer will enable automatic path completion.<br />
+                No data will be uploaded anywhere.<br />
+                <input type="file" id="archive_upload" /><br />
+                <datalist id="archive_paths"></datalist>
+            </p>
             <ol id="install">
                 <li>
-                    Install <label>path <input type="text" name="file" size="40" /></label>
+                    Install <label>file/folder<br /><input type="search" name="file" size="40" list="archive_paths" /></label>
                     <label>
                         into <select name="install_to">
                             <option selected="selected">GameData</option>
@@ -210,6 +217,7 @@
                             <option>GameRoot</option>
                         </select>
                     </label>
+                    <!-- Deactivate until release of Spec v1.18 <label>as <input name="install_as" type="text" placeholder="leave empty for same name" size="40" /></label> -->
                     <button type="button" name="remove">Remove</button>
                 </li>
             </ol>
