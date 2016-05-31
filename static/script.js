@@ -297,7 +297,7 @@ function generate_netkan() {
         alert(msg);
     }
 
-    $("#json_output").val(JSON.stringify(o, null, "\t"));
+    $("#json_output").text(JSON.stringify(o, null, "\t"));
 
 
 
