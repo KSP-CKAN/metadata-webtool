@@ -4,11 +4,11 @@
 <head>
     <meta charset="utf-8" />
     <title>Metadata-Webtool</title>
-    <link rel="stylesheet" href="bower_components/jquery-ui/themes/base/jquery-ui.css">
-    <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/jquery-ui/jquery-ui.js"></script>
-    <script src="bower_components/tv4/tv4.js"></script>
-    <script src="bower_components/jszip/dist/jszip.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/ui-lightness/jquery-ui.css" integrity="sha384-mf72GmkUsTKkmt05bABaLGVDDWha9SeDJTZ0tTQv4t1Tgz3CRQX+PENxJR8nQ7Tk" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha384-TlQc6091kl7Au04dPgLW7WK3iey+qO8dAi/LdwxaGBbszLxnizZ4xjPyNrEf+aQt" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js" integrity="sha384-YwCdhNQ2IwiYajqT/nGCj0FiU5SR4oIkzYP3ffzNWtu39GKBddP0M0waDU7Zwco0" crossorigin="anonymous"></script>
+    <script src="https://raw.github.com/geraintluff/tv4/master/tv4.js" integrity="sha384-BLm4KsxYkSCYQ0dAKxVu8c8GMAwhg4FR+vovFz8X9uETUfb1bn3F96Ebm74NAcYc" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.0.0/jszip.js" integrity="sha384-JoB0oWpuxbS3K5bzPuKlceF17bqFYnvaq6rt3BOiTYox+9dmwWZ8jPJrxNXo7SL/" crossorigin="anonymous"></script>
     <script src="data.js"></script>
     <style>
         .ui-autocomplete {
@@ -318,7 +318,7 @@
                     </div>
                 </li>
                 <li>
-                    <label><input type="checkbox" id="add_ksp_version_strict" value="1" size="40" /> Install only on exact KSP-Version match</label> in case this mods is not compatible with small KSP patches/hotfixes
+                    <label><input type="checkbox" id="add_ksp_version_strict" value="1" size="40" checked="checked" /> Install only on exact KSP-Version match</label> in case this mods is not compatible with small KSP patches/hotfixes
                 </li>
 
             </ol>
@@ -341,7 +341,12 @@
     </div>
     <br />
     <div>
-        <label>Output<br /><textarea id="json_output" cols="40"></textarea></label>
+        <label>Raw Output<br /><textarea id="json_output" cols="40"></textarea></label>
+        <form action="https://github.com/KSP-CKAN/NetKAN/issues/new" method="get">
+            <input type="hidden" name="body" id="issue_body" />
+            <br />
+            <button type="submit">Submit to Index</button>
+        </form>
     </div>
     <br />
     <small>
