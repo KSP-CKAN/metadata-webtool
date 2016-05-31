@@ -218,6 +218,7 @@ function generate_netkan() {
     if ($("#add_vref:checked").val()) {
         o["$vref"] = "#/ckan/ksp-avc";
     }
+    sets(o, "release_status");
 
     var resources = {};
     sets(resources, "resources_bugtracker", "bugtracker");
