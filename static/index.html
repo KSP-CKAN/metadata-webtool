@@ -57,10 +57,13 @@
                     <label>Repository name<br /><input type="text" id="github_repo" required="required" size="40" /></label>
                 </li>
                 <li>
-                    <label>Asset Match<br /><input type="text" id="github_asset_match" required="required" size="40" /></label>
-                </li>
-                <li>
-                    <label>Filter Regular Expression<br /><input type="text" id="github_filter_regexp" required="required" size="40" /></label> Case-sensitive C#
+                    <label>Fiter Regular Expression<br /><input type="text" id="github_filter_regexp" size="40" /></label> Case-sensitive C# semantics
+                    <br />
+                    <small>
+                        By default NetKAN will look for a zip file in the release.
+                        If there are multiple zip files it'll produce an error as it doesn't know which one to use.
+                        You can use this field to provide a regular expression to filter which file to use
+                    </small>
                 </li>
                 <li>
                     <button type="button" onclick="proceed_github()">Proceed</button>

@@ -39,13 +39,9 @@ function proceed_spacedock() {
 function proceed_github() {
     update_mode("github");
     var k = "#/ckan/github/" + get_val("github_user") + "/" + get_val("github_repo");
-    var am = get_val("github_asset_match");
     var fr = get_val("github_filter_regexp");
-    if (am && am.length) {
-        k = k + "/" + am;
-        if (fr && fr.length) {
-            k = k + "/" + fr;
-        }
+    if (fr && fr.length) {
+        k = k + "/asset_match/" + fr;
     }
     $("#kref").val(k);
 }
@@ -68,7 +64,6 @@ function proceed_kref() {
         var ghs = k.substring(gh.length).split("/", 4);
         $("#github_user").val(ghs[0]);
         $("#github_repo").val(ghs[1]);
-        $("#github_asset_match").val(ghs[2]);
         $("#github_filter_regexp").val(ghs[3]);
         return proceed_spacedock();
 
