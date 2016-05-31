@@ -323,25 +323,51 @@ function generate_netkan() {
         }
     }
 
-
-
-
-
     o["spec_version"] = req_version;
 
-    var validation_result = tv4.validateMultiple(o, ckan_schema);
+
+    var dummies = {};
+    var autofill = modes_autofill[mode];
+    for (var i in mandatory_fields) {
+        var k = mandatory_fields[i];
+        if (autofill.includes(k)) {
+            dummies[k] = "any";
+        }
+    }
+    if (o["$vref"]) {
+        dummies["version"] = "any";
+    }
+    if (dummies.download) {
+        dummies.download = "http://example.com";
+    }
+    if (dummies.license) {
+        dummies.license = "restricted";
+    }
+    var dummy_filled = {};
+    for (var k in dummies) {
+        dummy_filled[k] = dummies[k];
+    }
+    for (var k in o) {
+        dummy_filled[k] = o[k];
+    }
+
+
+    var validation_result = tv4.validateMultiple(dummy_filled, ckan_schema);
+
     if (!validation_result.valid) {
         var e = validation_result.errors;
-        var msg = "Not valid as .ckan, but maybe valid as .netkan - who knows?\n\nErrors:";
+        var msg = "There were errors validating against CKAN-Schema with dummy values for fields normally filled by NetKAN:";
         for (var i = 0; i < e.length; i++) {
             msg = msg + "\n" + e[i].message;
         }
         alert(msg);
     }
 
+
     var data = JSON.stringify(o, null, "\t");
     $("#json_output").val(data);
     $("#issue_body").val("\n\n``` JSON\n" + data + "\n```\n");
+
 
 
 }
