@@ -213,6 +213,7 @@ function generate_netkan() {
     sets(o, "abstract");
     seta(o, "license");
     seta(o, "author");
+    seta(o, "x_maintained_by");
     sets(o, "download");
     sets(o, "kref", "$kref");
     if ($("#add_vref:checked").val()) {
