@@ -21,6 +21,6 @@ Yes, you can try a possibly outdated and maybe even broken version at https://ks
 
 ##Can I also run the current version at my Computer?
 
-Yes, "just" install jquery, jqueri-ui, tv4, jszip via bower (bower.json and .bowerrc already configured) and then open static/index.html
+Yes, just open static/index.html
 
-Currently the Python stuff (*.py) is not yet needed for trying it out but for updating data only - just run refresh_hardcoded.py if you want to do that.
+The Python stuff (*.py) is not yet needed for trying it out but for updating data only - just run refresh_datajs.py if you want to do that.
