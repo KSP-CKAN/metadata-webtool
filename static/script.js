@@ -365,11 +365,8 @@ function generate_netkan() {
 
 
     var data = JSON.stringify(o, null, "\t");
-    $("#json_output").val(data);
     $("#issue_body").val("\n\n``` JSON\n" + data + "\n```\n");
-
-
-
+    $("#json_output").text(data);
 }
 
 
