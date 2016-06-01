@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="static/sorttable.css" />
+    <script src="static/sorttable.js"></script>
+</head>
+<body>
+    <table class="sortable">
+        <thead>
+            <tr><th>Key</th><th>Value</th></tr>
+        </thead>
+        <tbody>
+            <tr tal:repeat="i options/entry/items"><td tal:content="i/0"></td><td tal:content="i/1"></td></tr>
+        </tbody>
+    </table>
+</body>
+</html>

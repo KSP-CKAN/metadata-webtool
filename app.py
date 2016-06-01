@@ -79,7 +79,24 @@ class Root:
         update_netkan()
 
     @cherrypy.expose
-    def ckan(self, known=None, latest="0", view="html"):
+    def ckan_first(self, known=None, latest="0", view="html"):
+        cherrypy.response.headers[
+            "Last-Modified"] = cherrypy.lib.httputil.HTTPDate(ckan_updated.timestamp())
+        cherrypy.lib.cptools.validate_since()
+        latest = loads(latest)
+        if known:
+            where_eq = tuple(loads(known).items())
+        else:
+            where_eq = None
+        entry = filter_simple(ckan, where_eq, latest)[0]
+        options = {"entry": entry, "updated": friendly_timestamp(ckan_updated)}
+        if view == "json":
+            cherrypy.response.headers['Content-Type'] = "application/json"
+            return dumps(options, sort_keys=True, separators=(',', ':'), ensure_ascii=False).encode("utf-8")
+        return tr.expand("first", options)
+
+    @cherrypy.expose
+    def ckan_all(self, known=None, latest="0", view="html"):
         cherrypy.response.headers[
             "Last-Modified"] = cherrypy.lib.httputil.HTTPDate(ckan_updated.timestamp())
         cherrypy.lib.cptools.validate_since()
@@ -94,10 +111,28 @@ class Root:
         if view == "json":
             cherrypy.response.headers['Content-Type'] = "application/json"
             return dumps(options, sort_keys=True, separators=(',', ':'), ensure_ascii=False).encode("utf-8")
-        return tr.expand("list", options)
+        return tr.expand("all", options)
 
     @cherrypy.expose
-    def netkan(self, known=None, latest="0", view="html"):
+    def netkan_first(self, known=None, latest="0", view="html"):
+        cherrypy.response.headers[
+            "Last-Modified"] = cherrypy.lib.httputil.HTTPDate(netkan_updated.timestamp())
+        cherrypy.lib.cptools.validate_since()
+        latest = loads(latest)
+        if known:
+            where_eq = tuple(loads(known).items())
+        else:
+            where_eq = None
+        entry = filter_simple(netkan, where_eq, latest)[0]
+        options = {"entry": entry,
+                   "updated": friendly_timestamp(netkan_updated)}
+        if view == "json":
+            cherrypy.response.headers['Content-Type'] = "application/json"
+            return dumps(options, sort_keys=True, separators=(',', ':'), ensure_ascii=False).encode("utf-8")
+        return tr.expand("first", options)
+
+    @cherrypy.expose
+    def netkan_all(self, known=None, latest="0", view="html"):
         cherrypy.response.headers[
             "Last-Modified"] = cherrypy.lib.httputil.HTTPDate(netkan_updated.timestamp())
         cherrypy.lib.cptools.validate_since()
@@ -112,7 +147,7 @@ class Root:
         if view == "json":
             cherrypy.response.headers['Content-Type'] = "application/json"
             return dumps(options, sort_keys=True, separators=(',', ':'), ensure_ascii=False).encode("utf-8")
-        return tr.expand("list", options)
+        return tr.expand("all", options)
 
     @cherrypy.expose
     def index(self):
