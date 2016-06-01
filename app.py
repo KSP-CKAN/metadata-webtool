@@ -19,25 +19,36 @@ tc = TemplateCache()
 tr = TemplateRoot(os.path.abspath("templates"),
                   (lambda p: tc.getTemplate(p, "utf-8")))
 
-if False:
+
+def friendly_timestamp(ts):
+    return ts.strftime("%Y-%m-%dT%H:%M")
+
+
+def update_ckan():  # TODO: make thread-safe
+    ckan_updated = datetime.datetime.utcnow()
     ckan = interfaces.ckan.full()
-    netkan = interfaces.netkan.active_full()
-    updated = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M")
     for e in ckan:
         e["x_sortable_version"] = split_version(e["version"])
     ckan.sort(key=(lambda e: (e["identifier"], e["x_sortable_version"])))
-    netkan.sort(key=(lambda e: e["identifier"]))
     with open("static/ckan.min.json", "w", encoding="utf8") as f:
         dump(ckan, f, sort_keys=True, separators=(',', ':'), ensure_ascii=False)
+
+
+def update_netkan():  # TODO: make thread-safe
+    netkan_updated = datetime.datetime.utcnow()
+    netkan = interfaces.netkan.active_full()
+    netkan.sort(key=(lambda e: e["identifier"]))
     with open("static/netkan.min.json", "w", encoding="utf8") as f:
         dump(netkan, f, sort_keys=True, separators=(
             ',', ':'), ensure_ascii=False)
-else:
-    with open("static/ckan.min.json", "r", encoding="utf8") as f:
-        ckan = load(f)
-    with open("static/netkan.min.json", "r", encoding="utf8") as f:
-        netkan = load(f)
-    updated = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M")
+
+
+ckan_updated = datetime.datetime.utcnow()  # TODO: stop lying ;)
+with open("static/ckan.min.json", "r", encoding="utf8") as f:
+    ckan = load(f)
+netkan_updated = datetime.datetime.utcnow()  # TODO: stop lying ;)
+with open("static/netkan.min.json", "r", encoding="utf8") as f:
+    netkan = load(f)
 
 
 def filter_simple(entries, where_eq, latest):
@@ -59,6 +70,14 @@ def filter_simple(entries, where_eq, latest):
 class Root:
 
     @cherrypy.expose
+    def notify_ckan_meta(self):  # TODO: make sure it's from github
+        update_ckan()
+
+    @cherrypy.expose
+    def notify_netkan(self):  # TODO: make sure it's from github
+        update_netkan()
+
+    @cherrypy.expose
     def list(self, known=None, latest="0"):
         latest = loads(latest)
         if known:
@@ -76,7 +95,7 @@ class Root:
             where_eq = tuple(loads(known).items())
         else:
             where_eq = None
-        return {"data": filter_simple(ckan, where_eq, latest), "updated": updated}
+        return {"data": filter_simple(ckan, where_eq, latest), "updated": friendly_timestamp(ckan_updated)}
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
@@ -86,7 +105,7 @@ class Root:
             where_eq = tuple(loads(known).items())
         else:
             where_eq = None
-        return {"data": filter_simple(netkan, where_eq, latest), "updated": updated}
+        return {"data": filter_simple(netkan, where_eq, latest), "updated": friendly_timestamp(netkan_updated)}
 
     @cherrypy.expose
     def index(self):
