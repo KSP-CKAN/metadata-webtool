@@ -222,7 +222,7 @@ function generate_netkan() {
     sets(o, "identifier");
     sets(o, "abstract");
     seta(o, "license");
-    if (o.license){
+    if (o.license) {
         if (o.license.includes("WTFPL")) {
             req_version = latest(req_version, "v1.2");
         }
@@ -295,11 +295,7 @@ function generate_netkan() {
     } else if (ksp_ver_raw && ksp_ver_raw.length) {
         o["ksp_version"] = ksp_ver_raw;
     }
-    if ($("#add_ksp_version_strict:checked").val()) {
-        o["ksp_version_strict"] = true;
-    } else {
-        req_version = latest(req_version, "v1.16");
-    }
+
 
 
     setrel(o, "depends");
@@ -323,6 +319,14 @@ function generate_netkan() {
         for (var key in ujo) {
             o[key] = ujo[key];
         }
+    }
+
+    if ($("#add_ksp_version_strict:checked").val()) {
+        if (spec_versions.indexOf(req_version) >= spec_versions.indexOf("v1.16")) {
+            o["ksp_version_strict"] = true;
+        }
+    } else {
+        req_version = latest(req_version, "v1.16");
     }
 
     o["spec_version"] = req_version;
