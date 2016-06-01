@@ -28,3 +28,15 @@ def split_version(vs):
         parts.append(tuple(vo.index(c) for c in s))
         parts.append(iv)
     return tuple(parts)
+
+
+def normalize(e):
+    if isinstance(e["author"], str):
+        e["author"] = [e["author"]]
+    if isinstance(e["license"], str):
+        e["license"] = [e["license"]]
+    v = e["spec_version"]
+    if v == 1:
+        e["spec_version"] = "v1.8"
+    elif int(v.split(".")[1]) < 8:
+        e["spec_version"] = "v1.8"

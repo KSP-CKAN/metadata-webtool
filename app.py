@@ -12,8 +12,8 @@ import interfaces.netkan
 import datetime
 import os.path
 from simpletal.simpleTALUtils import TemplateRoot, TemplateCache
-from json import loads, dump, load
-from ckan_util import split_version
+from json import dumps, loads, dump, load
+from ckan_util import split_version, normalize
 
 tc = TemplateCache()
 tr = TemplateRoot(os.path.abspath("templates"),
@@ -28,6 +28,7 @@ def update_ckan():  # TODO: make thread-safe
     ckan_updated = datetime.datetime.utcnow()
     ckan = interfaces.ckan.full()
     for e in ckan:
+        normalize(e)
         e["x_sortable_version"] = split_version(e["version"])
     ckan.sort(key=(lambda e: (e["identifier"], e["x_sortable_version"])))
     with open("static/ckan.min.json", "w", encoding="utf8") as f:
@@ -78,34 +79,40 @@ class Root:
         update_netkan()
 
     @cherrypy.expose
-    def list(self, known=None, latest="0"):
+    def ckan(self, known=None, latest="0", view="html"):
+        cherrypy.response.headers[
+            "Last-Modified"] = cherrypy.lib.httputil.HTTPDate(ckan_updated.timestamp())
+        cherrypy.lib.cptools.validate_since()
         latest = loads(latest)
         if known:
             where_eq = tuple(loads(known).items())
         else:
             where_eq = None
         entries = filter_simple(ckan, where_eq, latest)
-        return tr.expand("list", {"entries": entries})
+        options = {"entries": entries,
+                   "updated": friendly_timestamp(ckan_updated)}
+        if view == "json":
+            cherrypy.response.headers['Content-Type'] = "application/json"
+            return dumps(options)
+        return tr.expand("list", options)
 
     @cherrypy.expose
-    @cherrypy.tools.json_out()
-    def ckan(self, known=None, latest="0"):
+    def netkan(self, known=None, latest="0", view="html"):
+        cherrypy.response.headers[
+            "Last-Modified"] = cherrypy.lib.httputil.HTTPDate(netkan_updated.timestamp())
+        cherrypy.lib.cptools.validate_since()
         latest = loads(latest)
         if known:
             where_eq = tuple(loads(known).items())
         else:
             where_eq = None
-        return {"data": filter_simple(ckan, where_eq, latest), "updated": friendly_timestamp(ckan_updated)}
-
-    @cherrypy.expose
-    @cherrypy.tools.json_out()
-    def netkan(self, known=None, latest="0"):
-        latest = loads(latest)
-        if known:
-            where_eq = tuple(loads(known).items())
-        else:
-            where_eq = None
-        return {"data": filter_simple(netkan, where_eq, latest), "updated": friendly_timestamp(netkan_updated)}
+        entries = filter_simple(netkan, where_eq, latest)
+        options = {"entries": entries,
+                   "updated": friendly_timestamp(netkan_updated)}
+        if view == "json":
+            cherrypy.response.headers['Content-Type'] = "application/json"
+            return dumps(options)
+        return tr.expand("list", options)
 
     @cherrypy.expose
     def index(self):
