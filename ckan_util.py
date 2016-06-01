@@ -4,7 +4,7 @@
 import re
 import string
 
-version_ordering = string.ascii_letters + "+-._"
+version_ordering = string.ascii_letters + string.punctuation
 epoch_re = re.compile("([0-9]*):")
 ver_parts_re = re.compile("([^0-9]+)|([0-9]+)")
 
