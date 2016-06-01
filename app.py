@@ -93,7 +93,7 @@ class Root:
                    "updated": friendly_timestamp(ckan_updated)}
         if view == "json":
             cherrypy.response.headers['Content-Type'] = "application/json"
-            return dumps(options)
+            return dumps(options, sort_keys=True, separators=(',', ':'), ensure_ascii=False).encode("utf-8")
         return tr.expand("list", options)
 
     @cherrypy.expose
@@ -111,7 +111,7 @@ class Root:
                    "updated": friendly_timestamp(netkan_updated)}
         if view == "json":
             cherrypy.response.headers['Content-Type'] = "application/json"
-            return dumps(options)
+            return dumps(options, sort_keys=True, separators=(',', ':'), ensure_ascii=False).encode("utf-8")
         return tr.expand("list", options)
 
     @cherrypy.expose
