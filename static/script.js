@@ -222,13 +222,15 @@ function generate_netkan() {
     sets(o, "identifier");
     sets(o, "abstract");
     seta(o, "license");
-    if (o.license.includes("WTFPL")) {
-        req_version = latest(req_version, "v1.2");
-    }
-    if (o.license.length == 1) {
-        o.license = o.license[0];
-    } else {
-        req_version = latest(req_version, "v1.8");
+    if (o.license){
+        if (o.license.includes("WTFPL")) {
+            req_version = latest(req_version, "v1.2");
+        }
+        if (o.license.length == 1) {
+            o.license = o.license[0];
+        } else {
+            req_version = latest(req_version, "v1.8");
+        }
     }
     seta(o, "author");
     sets(o, "download");
