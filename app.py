@@ -93,6 +93,8 @@ class Root:
                    "updated": friendly_timestamp(ckan_updated)}
         if view == "json":
             cherrypy.response.headers['Content-Type'] = "application/json"
+            if entries is ckan:
+                return open("static/ckan.min.json", "rb")
             return dumps(options, sort_keys=True, separators=(',', ':'), ensure_ascii=False).encode("utf-8")
         return tr.expand("list", options)
 
@@ -111,6 +113,8 @@ class Root:
                    "updated": friendly_timestamp(netkan_updated)}
         if view == "json":
             cherrypy.response.headers['Content-Type'] = "application/json"
+            if entries is netkan:
+                return open("static/netkan.min.json", "rb")
             return dumps(options, sort_keys=True, separators=(',', ':'), ensure_ascii=False).encode("utf-8")
         return tr.expand("list", options)
 
