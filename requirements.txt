@@ -1,1 +1,2 @@
 cherrypy
+simpletalsix >= 6.2.0.dev0
