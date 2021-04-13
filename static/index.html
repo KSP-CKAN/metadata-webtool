@@ -3,7 +3,8 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
-    <title>Metadata-Webtool</title>
+    <title>Metadata Webtool</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/ui-lightness/jquery-ui.css" integrity="sha384-mf72GmkUsTKkmt05bABaLGVDDWha9SeDJTZ0tTQv4t1Tgz3CRQX+PENxJR8nQ7Tk" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha384-TlQc6091kl7Au04dPgLW7WK3iey+qO8dAi/LdwxaGBbszLxnizZ4xjPyNrEf+aQt" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js" integrity="sha384-YwCdhNQ2IwiYajqT/nGCj0FiU5SR4oIkzYP3ffzNWtu39GKBddP0M0waDU7Zwco0" crossorigin="anonymous"></script>
@@ -11,6 +12,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.0.0/jszip.js" integrity="sha384-JoB0oWpuxbS3K5bzPuKlceF17bqFYnvaq6rt3BOiTYox+9dmwWZ8jPJrxNXo7SL/" crossorigin="anonymous"></script>
     <script src="data.js"></script>
     <style>
+        h1 {
+            background-image: url(favicon.ico);
+            background-position: left center;
+            background-repeat: no-repeat;
+            font-size: 16pt;
+            padding-left: 72px;
+            margin: 0;
+        }
         .ui-autocomplete {
             max-height: 100px;
             overflow-y: auto;
@@ -34,6 +43,7 @@
     <script src="script.js"></script>
 </head>
 <body>
+    <h1>Metadata Webtool</h1>
     <div id="mode_tabs">
         <ul>
             <li><a href="#tab_spacedock">SpaceDock</a></li>
@@ -98,7 +108,7 @@
             </ol>
         </div>
         <div id="tab_edit">
-            <p>Loading files from the index repository might be implemented later</p>
+            <p>Paste metadata from an existing netkan:</p>
             <ol>
                 <li>
                     <label>NetKAN File Contents<br /><textarea id="edit_json" cols="40"></textarea></label>
@@ -218,12 +228,17 @@
                             <option>Ships/VAB</option>
                             <option>Ships/@thumbs/VAB</option>
                             <option>Ships/@thumbs/SPH</option>
+                            <option>Ships/Script</option>
                             <option>Tutorial</option>
                             <option>Scenarios</option>
+                            <option>Missions</option>
                             <option>GameRoot</option>
                         </select>
                     </label>
-                    <!-- Deactivate until release of Spec v1.18 <label>as <input name="install_as" type="text" placeholder="leave empty for same name" size="40" /></label> -->
+                    <label>
+                        as <input name="install_as" type="text" placeholder="leave empty for same name" size="40" />
+                    </label>
+                    <br/>
                     <button type="button" name="remove">Remove</button>
                 </li>
             </ol>
@@ -304,7 +319,8 @@
                 <li>
                     <label>
                         Release Status <select id="release_status">
-                            <option selected="selected">stable</option>
+                            <option selected="selected"></option>
+                            <option>stable</option>
                             <option>testing</option>
                             <option>development</option>
                         </select>
@@ -323,7 +339,7 @@
                     </div>
                 </li>
                 <li>
-                    <label><input type="checkbox" id="add_ksp_version_strict" value="1" size="40" checked="checked" /> Install only on exact KSP-Version match</label> in case this mods is not compatible with small KSP patches/hotfixes
+                    <label><input type="checkbox" id="add_ksp_version_strict" value="1" size="40" checked="checked" /> Install only on exact game version match</label> in case this mod is not compatible with small patches/hotfixes
                 </li>
 
             </ol>
@@ -355,7 +371,7 @@
     </div>
     <br />
     <small>
-        Copyright (c) 2016, See <a href="https://github.com/KSP-CKAN/metadata-webtool/blob/master/LICENSE.md">LICENSE</a>
+        Copyright (c) 2016-2021, See <a href="https://github.com/KSP-CKAN/metadata-webtool/blob/master/LICENSE.md">LICENSE</a>
     </small>
 </body>
 </html>

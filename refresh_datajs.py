@@ -90,23 +90,29 @@ license_id_to_name = {
 }
 
 mandatory_fields = [
-    "abstract",
-    "download",
-    "identifier",
-    "license",
-    "name",
     "spec_version",
-    "version"
+    "identifier",
+    "name",
+    "abstract",
+    "author",
+    "version",
+    "ksp_version",
+    "license",
+    "download"
 ]
 
 modes_autofill = {
     "github": [
+        "name",
+        "abstract",
         "author",
         "download",
         "download_hash",
         "download_size",
         "resources.repository",
-        "version"
+        "resources.bugtracker",
+        "version",
+        "license"
     ],
     "http": [
         "download",

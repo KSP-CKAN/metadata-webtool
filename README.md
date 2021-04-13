@@ -14,9 +14,9 @@ Primarily this is a web form which results in a JSON file that is sent in a PR t
 Spacedock, github, and all other hosts (curse will be a kref-able source in the near future) are the current workflow determinants.
 
 
-## Can I Try?
+## Can I try it?
 
-Yes, you can try a possibly outdated and maybe even broken version at https://ksp-ckan.github.io/metadata-webtool/
+Yes, you can try it at https://ksp-ckan.github.io/metadata-webtool/
 
 
 ## Can I also run the current version at my Computer?
