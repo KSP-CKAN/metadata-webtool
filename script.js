@@ -22,42 +22,85 @@ function get_val(id) {
 }
 
 function update_mode(new_mode) {
-    var old_mode = mode;
-    mode = new_mode;
-    for (var i in mandatory_fields) {
-        var name = mandatory_fields[i];
+    var new_autofill = modes_autofill[new_mode]
+    for (var name of mandatory_fields) {
         $("#" + name).attr("required", "required");
+
+        if (new_autofill.includes(name)) {
+            $(`#mandatory_fields > #${name}_container`).detach().appendTo('#optional_fields')
+        } else {
+            $(`#optional_fields > #${name}_container`).detach().appendTo('#mandatory_fields')
+        }
     }
-    var oma = modes_autofill[old_mode];
-    for (var i in oma) {
-        var name = oma[i].replace(".", "_");
-        $("#" + name).removeClass("filled-by-netkan");
+    // Hide the optional fields section if empty
+    if ($('#optional_fields').children().length > 0) {
+        $('#optional_fields_header').show();
+    } else {
+        $('#optional_fields_header').hide();
+        $('#optional_fields_container').hide();
     }
-    var ma = modes_autofill[mode];
-    for (var i in ma) {
-        var name = ma[i].replace(".", "_");
-        $("#" + name).removeAttr("required").addClass("filled-by-netkan");
+    if (mode) {
+        var old_mode = mode;
+        for (var name of modes_autofill[old_mode]) {
+            $("#" + name.replace('.', '_')).removeClass("filled-by-netkan");
+        }
     }
+    for (var name of new_autofill) {
+        $("#" + name.replace('.', '_')).removeAttr("required").addClass("filled-by-netkan");
+    }
+    mode = new_mode;
     switch_add_vref();
 }
+
+function host_error(err) {
+    $("#json_output").text('{\n}');
+    $("#validation_errors").text(err);
+    $("#failure_box").show();
+    $("#success_box").hide();
+}
+
 function proceed_spacedock() {
     update_mode("spacedock");
-    $("#kref").val("#/ckan/spacedock/" + get_val("spacedock_id"));
+    var sd_id = get_val("spacedock_id");
+    $("#kref").val("#/ckan/spacedock/" + sd_id);
+    if (!sd_id) {
+        host_error("SpaceDock ID is missing");
+        $("#spacedock_id").focus();
+    } else {
+        generate_netkan();
+    }
 }
 
 function proceed_github() {
     update_mode("github");
-    var k = "#/ckan/github/" + get_val("github_user") + "/" + get_val("github_repo");
+    var gh_user = get_val("github_user");
+    var gh_repo = get_val("github_repo");
+    var k = "#/ckan/github/" + gh_user + "/" + gh_repo;
     var fr = get_val("github_filter_regexp");
     if (fr && fr.length) {
         k = k + "/asset_match/" + fr;
     }
     $("#kref").val(k);
+    if (!gh_user) {
+        host_error("GitHub user is missing");
+        $("#github_user").focus();
+    } else if (!gh_repo) {
+        host_error("GitHub repo is missing");
+    } else {
+        generate_netkan();
+    }
 }
 
 function proceed_http() {
     update_mode("http");
-    $("#kref").val("#/ckan/http/" + get_val("http_url"));
+    var h_url = get_val("http_url");
+    $("#kref").val("#/ckan/http/" + h_url);
+    if (!h_url) {
+        host_error("URL is missing");
+        $("#http_url").focus();
+    } else {
+        generate_netkan();
+    }
 }
 
 function proceed_kref() {
@@ -80,8 +123,16 @@ function proceed_kref() {
         return proceed_http();
     }
     $("#kref").val(k);
+    if (!k) {
+        host_error("kref is missing");
+        $("#kref_kref").focus();
+    } else {
+        generate_netkan();
+    }
 }
+
 function proceed_edit() {
+    $("#edit_json").focus();
     var o = JSON.parse(get_val("edit_json"));
     var ref_fields = ["depends", "recommends", "suggests", "supports", "conflicts"];
     var not_mapped = ["resources", "install",
@@ -130,6 +181,8 @@ function proceed_edit() {
 
 function proceed_other() {
     update_mode("other");
+    $("#identifier").focus();
+    generate_netkan();
 }
 
 function stringify_ref(ref) {
@@ -309,8 +362,6 @@ function generate_netkan() {
         o["ksp_version"] = ksp_ver_raw;
     }
 
-
-
     seta(o, "provides");
     setrel(o, "conflicts");
     setrel(o, "depends");
@@ -377,20 +428,23 @@ function generate_netkan() {
         dummy_filled[k] = o[k];
     }
 
-
     var validation_result = tv4.validateMultiple(dummy_filled, ckan_schema);
 
     if (!validation_result.valid) {
         var e = validation_result.errors;
-        var msg = "There were errors validating against CKAN-Schema with dummy values for fields normally filled by NetKAN:";
-        for (var i = 0; i < e.length; i++) {
-            msg = msg + "\n" + e[i].message;
-        }
-        alert(msg);
+        $("#validation_errors").text(
+            e.map(err => err.message).join('\n')
+        );
+        $("#failure_box").show();
+        $("#success_box").hide();
+    } else {
+        $("#failure_box").hide();
+        $("#validation_errors").text('');
+        $("#success_box").show();
     }
 
-
     var data = JSON.stringify(o, null, "    ");
+    $("#issue_title").val(`Add ${get_val("identifier")}`);
     $("#issue_body").val("\n\n```json\n" + data + "\n```\n");
     $("#json_output").text(data);
 }
@@ -441,6 +495,53 @@ function switch_add_vref() {
     }
 }
 
+function reset_fields() {
+    for (var ident of [
+        '#spacedock_id',
+        '#github_user',
+        '#github_repo',
+        '#github_filter_regexp',
+        '#http_url',
+        '#kref_kref',
+        '#edit_json',
+
+        '#identifier',
+        '#add_vref',
+        '#name',
+        '#author',
+        '#version',
+        '#ksp_version',
+        '#license',
+        '#download',
+
+        '#resources_homepage',
+        '#resources_repository',
+        '#resources_ci',
+        '#resources_spacedock',
+        '#resources_manual',
+        '#resources_license',
+        '#resources_bugtracker',
+        '#resources_x_screenshot',
+
+        '#depends',
+        '#recommends',
+        '#suggests',
+        '#supports',
+        '#conflicts',
+
+        '#release_status',
+        '#provides',
+        '#add_ksp_version_strict',
+
+        '#kref',
+    ]) {
+        $(ident).val('');
+    }
+    var tabs = $('#mode_tabs');
+    tabs.tabs('option', 'active', 0);
+    proceed_spacedock();
+}
+
 $(function () {
     var idcheck = function () {
         if (ckan_ids.includes(get_val("identifier"))) {
@@ -470,8 +571,30 @@ $(function () {
     $("#generate_netkan").button().on("click", generate_netkan);
     $("#submit_to_index").button();
 
-    $("#mode_tabs").tabs();
-    update_mode("other");
+    $("#mode_tabs").tabs({
+        activate: (evt, ui) => {
+            switch (ui.newPanel.attr('id')) {
+                case 'tab_spacedock':
+                    proceed_spacedock();
+                    break;
+                case 'tab_github':
+                    proceed_github();
+                    break;
+                case 'tab_http':
+                    proceed_http();
+                    break;
+                case 'tab_kref':
+                    proceed_kref();
+                    break;
+                case 'tab_edit':
+                    proceed_edit();
+                    break;
+                case 'tab_other':
+                    proceed_other();
+                    break;
+            }
+        }
+    });
 
     var al = $("#add_license").dialog({
         autoOpen: false,
@@ -522,10 +645,13 @@ $(function () {
         }
         $('[name="file"]', install).on("change", norm);
 
-        $('[name="remove"]', install).on("click", function () {
+        $('[name="remove"]', install).button().on("click", function () {
             install.remove();
+            generate_netkan();
         });
-
+        $("#install input").on('input', generate_netkan);
+        $("#install select").selectmenu({ change: generate_netkan });
+        generate_netkan();
     });
     $("#archive_upload").on("change", function (event) {
         function handleFile(f) {
@@ -547,4 +673,16 @@ $(function () {
         }
     });
 
+    $("#reset_button").button().on('click', reset_fields);
+    $("#accordion button").button();
+
+    $("#tab_spacedock input, #tab_spacedock textarea").on('input', proceed_spacedock);
+    $("#tab_github    input, #tab_github    textarea").on('input', proceed_github);
+    $("#tab_http      input, #tab_http      textarea").on('input', proceed_http);
+    $("#tab_kref      input, #tab_kref      textarea").on('input', proceed_kref);
+    $("#tab_edit      input, #tab_edit      textarea").on('input', proceed_edit);
+    $("#accordion     input, #accordion     textarea").on('input', generate_netkan);
+    $("#accordion select").selectmenu({ change: generate_netkan });
+
+    proceed_spacedock();
 });
