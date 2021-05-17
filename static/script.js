@@ -53,7 +53,7 @@ function update_mode(new_mode) {
 }
 
 function host_error(err) {
-    $("#json_output").text('{\n}');
+    $("#json_output").text('');
     $("#validation_errors").text(err);
     $("#failure_box").show();
     $("#success_box").hide();
@@ -133,15 +133,15 @@ function proceed_kref() {
 
 function proceed_edit() {
     $("#edit_json").focus();
-    var o = JSON.parse(get_val("edit_json"));
+    var o = jsyaml.load(get_val("edit_json"));
     var ref_fields = ["depends", "recommends", "suggests", "supports", "conflicts"];
     var not_mapped = ["resources", "install",
         "depends", "recommends", "suggests", "supports", "conflicts", "provides",
         "ksp_version_strict", "ksp_version", "ksp_version_min", "ksp_version_max",
-        "$vref"
+        "$vref", "$kref"
     ];
     for (var key in o) {
-        if (!not_mapped.includes("key")) {
+        if (!not_mapped.includes(key)) {
             $("#" + key).val(o[key]);
         }
     }
@@ -375,7 +375,7 @@ function generate_netkan() {
     var uj = get_val("update_json");
     var ujo;
     try {
-        ujo = JSON.parse(uj);
+        ujo = jsyaml.load(uj);
     } catch (err) {
         alert("Update JSON field not applied\n\n" + err);
     }
@@ -443,7 +443,7 @@ function generate_netkan() {
         $("#success_box").show();
     }
 
-    var data = JSON.stringify(o, null, "    ");
+    var data = jsyaml.dump(o);
     $("#issue_title").val(`Add ${get_val("identifier")}`);
     $("#issue_body").val("\n\n```json\n" + data + "\n```\n");
     $("#json_output").text(data);
