@@ -10,6 +10,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha384-JPbtLYL10d/Z1crlc6GGGGM3PavCzzoUJ1UxH0bXHOfguWHQ6XAWrIzW+MBGGXe5" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tv4/1.2.7/tv4.js" integrity="sha384-BLm4KsxYkSCYQ0dAKxVu8c8GMAwhg4FR+vovFz8X9uETUfb1bn3F96Ebm74NAcYc" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.0.0/jszip.js" integrity="sha384-JoB0oWpuxbS3K5bzPuKlceF17bqFYnvaq6rt3BOiTYox+9dmwWZ8jPJrxNXo7SL/" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js" integrity="sha384-+pxiN6T7yvpryuJmE1gM9PX7yQit15auDb+ZwwvJOd/4be2Cie5/IuVXgQb/S9du" crossorigin="anonymous"></script>
     <script src="data.js"></script>
     <style>
         html, body {
@@ -58,6 +59,7 @@
         #json_output {
             border-style: solid;
             border-width: thin;
+            padding: 0.5em;
         }
 
         #failure_box, #success_box {
@@ -191,7 +193,7 @@
                 </li>
             </ol>
         </div>
-        <h3 id="optional_fields_header">Optional overrides (retrieved from host)</h3>
+        <h3 id="optional_fields_header">Optional overrides (retrieved from host, leave blank unless you know what you're doing)</h3>
         <div id="optional_fields_container">
             <ol id="optional_fields">
             </ol>
@@ -379,7 +381,7 @@
     <br />
     <div id="output_container" class="ui-widget ui-state-default">
         <div>
-            <label>JSON output:</label>
+            <label>YAML output:</label>
             <pre id="json_output"></pre>
         </div><div>
             <label>Status:</label>
