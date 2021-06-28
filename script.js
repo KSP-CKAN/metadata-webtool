@@ -445,7 +445,7 @@ function generate_netkan() {
 
     var data = jsyaml.dump(o);
     $("#issue_title").val(`Add ${get_val("identifier")}`);
-    $("#issue_body").val("\n\n```json\n" + data + "\n```\n");
+    $("#issue_body").val("\n\n```yaml\n" + data + "\n```\n");
     $("#json_output").text(data);
 }
 
