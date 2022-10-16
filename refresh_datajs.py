@@ -6,6 +6,7 @@
 import json
 import interfaces.ckan
 import datetime
+from typing import List, Dict
 
 license_id_to_name = {
     "Apache": "Apache License",
@@ -138,6 +139,69 @@ modes_autofill = {
     ]
 }
 
+# Keep these lists synched with https://github.com/KSP-CKAN/CKAN/wiki/Suggested-Tags
+
+tags_mod_types: List[str] = [
+    'parts',
+    'physics',
+    'plugin',
+    'app',
+    'config',
+    'library',
+    'flags',
+    'agency',
+    'suits',
+]
+
+tags_mod_descriptors: List[str] = [
+    'control',
+    'convenience',
+    'information',
+    'editor',
+    'planet-pack',
+    'graphics',
+    'sound',
+    'resources',
+    'science',
+    'tech-tree',
+    'career',
+    'combat',
+    'comms',
+    'buildings',
+    'crewed',
+    'uncrewed',
+    'stock-inventory',
+]
+
+tags_descriptions: Dict[str, str] = {
+    'parts':           'Mods that provide new pieces that you can add to your planes or rockets',
+    'physics':         'Mods that change something about the physics, such as atmospheric lift/drag, re-entry heating, or craft rigidity',
+    'plugin':          'Mods that contain a DLL',
+    'app':             'Mods that include or work best with something executable or web-based that runs outside of KSP',
+    'config':          'Mods that add alternative or default configuration, such as tech trees or ModuleManager patches',
+    'library':         'Mods that do nothing by themselves, but provide functionality for other mods',
+    'flags':           'Mods that provide new flags',
+    'agency':          'Mods that add agencies that can submit contracts',
+    'suits':           'Mods that add custom suits',
+    'control':         'Mods that add alternative methods of controlling crafts, such as autopilot features or programmability',
+    'convenience':     'Mods that make some game actions easier, such as shortcut toolbar buttons',
+    'information':     'Mods that provide extended information about your craft, orbit, planets, etc.',
+    'editor':          'Mods that add or change something in the editors',
+    'planet-pack':     'Mods that modify the solar system by adding, removing, or changing planets or moons or their orbits',
+    'graphics':        'Mods that change the visuals, usually with new models or textures',
+    'sound':           'Mods that change the music or sound effects',
+    'resources':       'Mods focused on ISRU and resource management',
+    'science':         'Mods that add new ways to collect or use science',
+    'tech-tree':       'Mods that extend or overhaul the tech tree hierarchy',
+    'career':          'Mods that enhance career gameplay, often by providing or hiding contracts',
+    'combat':          'Mods that provide armor, weapons, or combat-oriented mechanics',
+    'comms':           'Mods that alter some aspect of communication between vessels',
+    'buildings':       'Mods that add static ground structures',
+    'crewed':          'Mods that enhance crewed gameplay, along the lines of life support, colony-building, and station-building',
+    'uncrewed':        'Mods that enhance uncrewed gameplay',
+    'stock-inventory': 'Mods that enhance the stock inventory system',
+}
+
 js = """
 var license_name_to_id = {};
 for (var k in license_id_to_name) {
@@ -197,6 +261,18 @@ def main():
 
         f.write("var ckan_names_ids = ")
         json.dump(ckan_names_ids, f, sort_keys=True)
+        f.write(";\n\n")
+
+        f.write("var tags_mod_types = ")
+        json.dump(tags_mod_types, f)
+        f.write(";\n\n")
+
+        f.write("var tags_mod_descriptors = ")
+        json.dump(tags_mod_descriptors, f)
+        f.write(";\n\n")
+
+        f.write("var tags_descriptions = ")
+        json.dump(tags_descriptions, f)
         f.write(";\n\n")
 
         f.write(js)

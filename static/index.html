@@ -39,6 +39,10 @@
             background-color: lightgreen;
         }
 
+        table {
+            border-spacing: 1em 0;
+        }
+
         #edit_json {
             width: 100%;
             height: 15em;
@@ -227,6 +231,20 @@
                 </li>
             </ol>
         </div>
+        <h3>Tags (recommended)</h3>
+        <div id="tags_container">
+            See the <a href="https://github.com/KSP-CKAN/CKAN/wiki/Suggested-Tags" target="_blank">tags wiki</a> for how to choose tags.
+            <ol id="tags_types">
+                <li>
+                    Mod type (choose at least one)
+                    <table id="tags_mod_types"></table>
+                </li>
+                <li>
+                    Mod descriptors (choose zero or more)
+                    <table id="tags_mod_descriptors"></table>
+                </li>
+            </ol>
+        </div>
         <h3>Installation</h3>
         <div id="install_fields">
             <p>
@@ -360,9 +378,6 @@
                         </div>
                     </div>
                 </li>
-                <li>
-                    <label><input type="checkbox" id="add_ksp_version_strict" value="1" size="40" checked="checked" /> Install only on exact game version match</label> in case this mod is not compatible with small patches/hotfixes
-                </li>
 
             </ol>
         </div>
@@ -403,7 +418,7 @@
         </div>
         <br />
         <small>
-            Copyright (c) 2016&ndash;2021, see <a href="https://github.com/KSP-CKAN/metadata-webtool/blob/master/LICENSE.md">LICENSE</a>
+            Copyright (c) 2016&ndash;2022, see <a href="https://github.com/KSP-CKAN/metadata-webtool/blob/master/LICENSE.md">LICENSE</a>
         </small>
     </div>
 </body>
