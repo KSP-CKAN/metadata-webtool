@@ -137,7 +137,7 @@ function proceed_edit() {
     var ref_fields = ["depends", "recommends", "suggests", "supports", "conflicts"];
     var not_mapped = ["resources", "install",
         "depends", "recommends", "suggests", "supports", "conflicts", "provides",
-        "ksp_version_strict", "ksp_version", "ksp_version_min", "ksp_version_max",
+        "ksp_version", "ksp_version_min", "ksp_version_max",
         "$vref", "$kref"
     ];
     for (var key in o) {
@@ -169,11 +169,6 @@ function proceed_edit() {
     }
     var ksp = { "name": "", "version": o.ksp_version, "min_version": o.ksp_version_min, "max_version": o.ksp_version_max };
     $("#ksp_version").val(stringify_ref(ksp));
-    if (o["ksp_version_strict"]) {
-        $("#add_ksp_version_strict").attr("checked", "checked");
-    } else {
-        $("#add_ksp_version_strict").removeAttr("checked");
-    }
 
     $("#kref_kref").val(o["$kref"]);
     proceed_kref();
@@ -318,6 +313,13 @@ function generate_netkan() {
         o["resources"] = resources;
     }
 
+    const tags = Array.from(document.querySelectorAll('input[type=checkbox][name=tag]:checked'),
+                            e => e.value);
+    if (tags.length > 0) {
+        o['tags'] = tags;
+        req_version = latest(req_version, 'v1.27');
+    }
+
     var install = []
     $("#install li").each(function () {
         var v = 1;
@@ -383,14 +385,6 @@ function generate_netkan() {
         for (var key in ujo) {
             o[key] = ujo[key];
         }
-    }
-
-    if ($("#add_ksp_version_strict:checked").val()) {
-        if (spec_versions.indexOf(req_version) >= spec_versions.indexOf("v1.16")) {
-            o["ksp_version_strict"] = true;
-        }
-    } else {
-        req_version = latest(req_version, "v1.16");
     }
 
     o["spec_version"] = req_version;
@@ -531,15 +525,33 @@ function reset_fields() {
 
         '#release_status',
         '#provides',
-        '#add_ksp_version_strict',
 
         '#kref',
     ]) {
         $(ident).val('');
     }
+    $('input[name="tag"]').prop('checked', false);
     var tabs = $('#mode_tabs');
     tabs.tabs('option', 'active', 0);
     proceed_spacedock();
+}
+
+function tag_checkbox_row(name) {
+    const chb = document.createElement('input');
+    chb.setAttribute('type', 'checkbox');
+    chb.setAttribute('name', 'tag');
+    chb.setAttribute('value', name);
+    const lbl = document.createElement('label');
+    lbl.appendChild(chb);
+    lbl.appendChild(document.createTextNode(name));
+    const lblTh = document.createElement('th');
+    lblTh.appendChild(lbl);
+    const descrTd = document.createElement('td');
+    descrTd.appendChild(document.createTextNode(tags_descriptions[name]));
+    const tr = document.createElement('tr');
+    tr.appendChild(lblTh);
+    tr.appendChild(descrTd);
+    return tr;
 }
 
 $(function () {
@@ -565,8 +577,6 @@ $(function () {
         collapsible: true,
         heightStyle: "content"
     });
-
-    $("#add_ksp_version_strict").buttonset();
 
     $("#generate_netkan").button().on("click", generate_netkan);
     $("#submit_to_index").button();
@@ -626,6 +636,9 @@ $(function () {
         al.dialog("open");
         $("#add_license input").val("");
     });
+
+    $('#tags_mod_types').append(tags_mod_types.map(tag_checkbox_row));
+    $('#tags_mod_descriptors').append(tags_mod_descriptors.map(tag_checkbox_row));
 
     add_ref("depends");
     add_ref("suggests");
