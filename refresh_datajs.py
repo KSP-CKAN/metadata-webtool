@@ -110,6 +110,7 @@ modes_autofill = {
         "download",
         "download_hash",
         "download_size",
+        "resources.homepage",
         "resources.repository",
         "resources.bugtracker",
         "version",
