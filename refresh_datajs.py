@@ -172,6 +172,7 @@ tags_mod_descriptors: List[str] = [
     'crewed',
     'uncrewed',
     'stock-inventory',
+    'first-person',
 ]
 
 tags_descriptions: Dict[str, str] = {
@@ -201,6 +202,7 @@ tags_descriptions: Dict[str, str] = {
     'crewed':          'Mods that enhance crewed gameplay, along the lines of life support, colony-building, and station-building',
     'uncrewed':        'Mods that enhance uncrewed gameplay',
     'stock-inventory': 'Mods that enhance the stock inventory system',
+    'first-person':    'Mods that provide or enhance a first-person view, such as IVAs and props',
 }
 
 js = """
