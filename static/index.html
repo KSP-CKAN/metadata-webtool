@@ -165,9 +165,6 @@
                 <li>
                     <label><input type="checkbox" id="add_vref" value="1" onchange="switch_add_vref()" /> Installs <code>.version</code> file</label>
                 </li>
-                <li id="version_container">
-                    <label>Mod Version<br /><input type="text" id="version" size="40" /></label>
-                </li>
                 <li id="abstract_container">
                     <label>Abstract - A short description of what the mod does<br /><textarea id="abstract" placeholder="Awesome mod makes everything better!" cols="40"></textarea></label>
                 </li>
@@ -178,15 +175,17 @@
                     <label>Mod Authors (one per line)<br /><textarea id="author" cols="40"></textarea></label>
                 </li>
                 <li id="license_container">
-                    <label>License(s)<br /><textarea id="license" cols="40"></textarea></label>
-                    <button type="button" id="add_license_button">Add</button> Users can choose to which of these to adhere
+                    <label>License(s) - If multiple, users can choose to which license to use<br />
+                    <textarea id="license" cols="40"></textarea></label><br />
+                    <button type="button" id="add_license_button">Find a license</button>
                     <div id="add_license" title="Add license">
-                        <a href="https://github.com/KSP-CKAN/CKAN/blob/master/Spec.md#license" target="_blank">About valid licenses</a>
+                        <a href="https://github.com/KSP-CKAN/CKAN/blob/master/Spec.md#license" target="_blank">About licenses</a><br />
+                        <a href="https://github.com/KSP-CKAN/CKAN/blob/1f52b829031426d7bf0500f24d684b12308261be/CKAN.schema#L488-L521" target="_blank">List of allowed licenses</a><br />
                         <div class="ui-widget">
-                            <label>Search by name<br /><input type="text" id="add_license_name" size="40"></label>
+                            <label>Search by name<br /><input type="text" id="add_license_name" size="30"></label>
                         </div>
                         <div class="ui-widget">
-                            <label>License ID<br /><input type="text" id="add_license_id" size="40"></label>
+                            <label>License ID<br /><input type="text" id="add_license_id" size="20"></label>
                         </div>
                     </div>
                 </li>
@@ -194,6 +193,9 @@
                     <label>Game version<br /><input type="text" id="ksp_version" size="40" /></label> examples: <code>==1.0</code> or <code>&lt;=1.1&gt;=1.0.3</code> - set to <code>any</code> (or leave empty) to state compatibility with <em>all</em> versions
                     <br />
                     <small>While not technically mandatory, not providing this field is considered bad practice.</small>
+                </li>
+                <li id="version_container">
+                    <label>Mod Version<br /><input type="text" id="version" size="40" /></label>
                 </li>
             </ol>
         </div>
@@ -418,7 +420,7 @@
         </div>
         <br />
         <small>
-            Copyright (c) 2016&ndash;2022, see <a href="https://github.com/KSP-CKAN/metadata-webtool/blob/master/LICENSE.md">LICENSE</a>
+            Copyright (c) 2016&ndash;2024, see <a href="https://github.com/KSP-CKAN/metadata-webtool/blob/master/LICENSE.md">LICENSE</a>
         </small>
     </div>
 </body>
