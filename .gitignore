@@ -4,3 +4,4 @@ static/bower_components/
 *.sln
 *.pyproj
 *.pyc
+__pycache__
