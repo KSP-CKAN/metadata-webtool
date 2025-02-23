@@ -126,7 +126,8 @@ modes_autofill = {
         "resources.repository",
         "resources.bugtracker",
         "version",
-        "license"
+        "license",
+        "release_status"
     ],
     "http": [
         "download",
@@ -148,7 +149,8 @@ modes_autofill = {
         "resources.repository",
         "resources.spacedock",
         "resources.x_screenshot",
-        "version"
+        "version",
+        "release_status"
     ]
 }
 
