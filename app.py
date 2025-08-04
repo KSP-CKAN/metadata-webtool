@@ -15,7 +15,7 @@ from ckan_util import split_version
 
 ckan = interfaces.ckan.full()
 netkan = interfaces.netkan.active_full()
-updated = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M")
+updated = datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%dT%H:%M")
 ckan.sort(key=(lambda e: (e["identifier"], split_version(e["version"]))))
 netkan.sort(key=(lambda e: e["identifier"]))
 
