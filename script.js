@@ -360,6 +360,9 @@ function generate_netkan() {
             case "download_hash":
                 dummies[field] = {};
                 break;
+            case "release_status":
+                // Just omit this property
+                break;
             default:
                 dummies[field] = "any";
                 break;
