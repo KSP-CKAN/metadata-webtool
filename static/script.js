@@ -412,6 +412,7 @@ function add_ref(name) {
                 var li = $("#" + name);
                 var new_val = (li.val() + " " + get_val("add_" + name + "_id")).replace(/\s+/g, "\n").trim();
                 li.val(new_val);
+                generate_netkan();
                 $(this).dialog("close");
             },
             "Cancel": function () {
