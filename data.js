@@ -1,7 +1,7 @@
-// auto-generated on 2026-01-28T23:15:06 UTC - see refresh_datajs.py
+// auto-generated on 2026-01-29T23:15:13 UTC - see refresh_datajs.py
 "use strict";
 
-var data_updated = "2026-01-28T23:15:06";
+var data_updated = "2026-01-29T23:15:13";
 
 var mandatory_fields = ["identifier", "name", "abstract", "author", "ksp_version", "license", "version", "download"];
 
