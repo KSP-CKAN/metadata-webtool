@@ -21,3 +21,5 @@ jobs:
         with:
           folder: static
           branch: gh-pages
+          git-config-name: NetKAN Robot
+          git-config-email: netkan-bot@ksp-ckan.space
